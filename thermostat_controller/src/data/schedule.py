@@ -57,10 +57,10 @@ class ScheduleEntry(object):
         return False
 
     def __str__(self):
-        return self.entry
+        return str(self.entry)
 
     def __repr__(self):
-        return str(self)
+        return str(self.entry)
 
 
 class Schedule(object):
