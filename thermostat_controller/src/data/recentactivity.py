@@ -27,8 +27,8 @@ class RecentActivity(object):
 
         return (
             cool_enable < cool_disable and
-            now - cool_disable >= CHANGE_THRESHOLD_TIME_SECONDS and
-            now - max(heat_enable, heat_disable) >= CHANGE_THRESHOLD_TIME_SECONDS)
+            now - cool_disable <= CHANGE_THRESHOLD_TIME_SECONDS and
+            now - max(heat_enable, heat_disable) <= CHANGE_THRESHOLD_TIME_SECONDS)
 
     def canToggleCool(self) -> bool:
         """ Make sure that heating has been off for at least 5
@@ -41,8 +41,8 @@ class RecentActivity(object):
 
         return (
             heat_enable < heat_disable and
-            now - heat_disable >= CHANGE_THRESHOLD_TIME_SECONDS and
-            now - max(cool_enable, cool_disable) >= CHANGE_THRESHOLD_TIME_SECONDS)
+            now - heat_disable <= CHANGE_THRESHOLD_TIME_SECONDS and
+            now - max(cool_enable, cool_disable) <= CHANGE_THRESHOLD_TIME_SECONDS)
 
     """
     Getters and setters

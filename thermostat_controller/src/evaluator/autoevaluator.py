@@ -22,6 +22,7 @@ class AutoEvaluator(evaluator.Evaluator):
         # in this mode
         if not recent_activity.canToggleCool() and \
            not recent_activity.canToggleHeat():
+            logging.debug("Cannot toggle heat or cooling, skipping iteration")
             return
 
         temp_c = sensor.getTemperature()
