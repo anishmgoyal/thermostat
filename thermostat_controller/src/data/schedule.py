@@ -56,6 +56,9 @@ class ScheduleEntry(object):
             return True
         return False
 
+    def __str__(self):
+        return self.entry
+
 
 class Schedule(object):
     def __init__(self):
