@@ -26,7 +26,7 @@ class RecentActivity(object):
         cool_enable = self.getLastCoolEnableTime()
 
         return (
-            cool_enable < cool_disable and
+            cool_enable <= cool_disable and
             now - cool_disable <= CHANGE_THRESHOLD_TIME_SECONDS and
             now - max(heat_enable, heat_disable) <= CHANGE_THRESHOLD_TIME_SECONDS)
 
@@ -40,7 +40,7 @@ class RecentActivity(object):
         cool_enable = self.getLastCoolEnableTime()
 
         return (
-            heat_enable < heat_disable and
+            heat_enable <= heat_disable and
             now - heat_disable <= CHANGE_THRESHOLD_TIME_SECONDS and
             now - max(cool_enable, cool_disable) <= CHANGE_THRESHOLD_TIME_SECONDS)
 
