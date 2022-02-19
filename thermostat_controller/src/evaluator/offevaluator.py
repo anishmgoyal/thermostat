@@ -15,5 +15,5 @@ class OffEvaluator(evaluator.Evaluator):
             sensor: circuit.TemperatureSensor):
         super().evaluate(
             config, controller, recent_activity, run_data, schedule, sensor)
-        logging.debug("Thermostat is off")
+        logging.debug("Thermostat is in off mode")
         controller.shutDown()

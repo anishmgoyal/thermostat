@@ -15,8 +15,10 @@ class Evaluator(object):
             sensor: circuit.TemperatureSensor):
         # common logic for checking the state of the fan
         if run_data.getFanEnabled() and not controller.is_fan_on:
+            logging.debug("Turning the fan on")
             controller.enableFan()
         if not run_data.getFanEnabled() and controller.is_fan_on:
+            logging.debug("Setting the fan to auto")
             controller.disableFan()
 
     def getActiveSchedule(self,

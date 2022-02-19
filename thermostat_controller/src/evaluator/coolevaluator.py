@@ -46,23 +46,15 @@ class CoolEvaluator(evaluator.Evaluator):
         super().evaluate(
             config, controller, recent_activity, run_data, schedule, sensor)
 
+        # If we can't make any changes, skip this iteration
+        if not recent_activity.canToggle():
+            logging.debug("Cannot toggle, skipping iteration")
+            return
+
         # If we're in cool mode, first handle heating
         # mode, which might need to be disabled.
         if controller.is_heat_on:
-            if recent_activity.canToggleHeat():
-                # We're in cool mode, but have the heater on. It's
-                # been on long enough that we CAN shut it down, so
-                # we will do so now.
-                controller.shutDown()
-                return
-            else:
-                # We can't shut down heating right now, so leave it
-                # on till the next pass
-                return
-
-        if not recent_activity.canToggleCool():
-            # There's nothing we can do in this pass, so skip till
-            # the next pass
+            controller.shutDown()
             return
 
         temp_c = sensor.getTemperature()

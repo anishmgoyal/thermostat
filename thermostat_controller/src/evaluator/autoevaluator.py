@@ -20,8 +20,7 @@ class AutoEvaluator(evaluator.Evaluator):
 
         # We need to be able to do one of these two things to do anything useful
         # in this mode
-        if not recent_activity.canToggleCool() and \
-           not recent_activity.canToggleHeat():
+        if not recent_activity.canToggle():
             logging.debug("Cannot toggle heat or cooling, skipping iteration")
             return
 
@@ -33,36 +32,24 @@ class AutoEvaluator(evaluator.Evaluator):
         logging.debug("Current temp: {0:0.1f}".format(temp_c))
 
         curr_settings = super().getActiveSchedule(run_data, schedule)
-        if controller.is_cool_on:
-            # Check if we should disable cooling
-            if not recent_activity.canToggleCool():
-                logging.debug("Cooling is on, and not changeable")
-                return
-
-            if coolevaluator.CoolEvaluator.shouldDisableCooling(
-                    sensor, curr_settings, config):
-                logging.debug("Shutting down cooler")
-                controller.shutDown()
-
-        elif controller.is_heat_on:
-            # Check if we should disable heating
-            if not recent_activity.canToggleHeat():
-                logging.debug("Heating is on, and not changeable")
-                return
-
+        if controller.is_heat_on:
             if heatevaluator.HeatEvaluator.shouldDisableHeat(
                     temp_c, curr_settings, config):
                 logging.debug("Shutting down heater")
                 controller.shutDown()
 
-        elif recent_activity.canToggleCool() and \
-                coolevaluator.CoolEvaluator.shouldEnableCooling(
-                sensor, curr_settings, config):
-            logging.debug("Enabling cooler")
-            controller.enableCool()
+        elif controller.is_cool_on:
+            if coolevaluator.CoolEvaluator.shouldDisableCooling(
+                    sensor, curr_settings, config):
+                logging.debug("Shutting down cooler")
+                controller.shutDown()
 
-        elif recent_activity.canToggleHeat() and \
-                heatevaluator.HeatEvaluator.shouldEnableHeat(
+        elif heatevaluator.HeatEvaluator.shouldEnableHeat(
                 sensor, curr_settings, config):
             logging.debug("Enabling heater")
             controller.enableHeat()
+
+        elif coolevaluator.CoolEvaluator.shouldEnableCooling(
+                sensor, curr_settings, config):
+            logging.debug("Enabling cooler")
+            controller.enableCool()

@@ -73,7 +73,7 @@ class HVACController(object):
 
         # Safety measure - make sure we are eligible for
         # a heat toggle now
-        if self.recent_activity.canToggleHeat():
+        if self.recent_activity.canToggle():
             self.recent_activity.setLastHeatEnableTime(time.time())
             self.control_pin.value = CONTROL_HEAT
             self.power_pin.value = POWER_TEMP
@@ -90,7 +90,7 @@ class HVACController(object):
 
         # Safety measure - make sure we are eligible for
         # a cooling toggle now
-        if self.recent_activity.canToggleCool():
+        if self.recent_activity.canToggle():
             self.recent_activity.setLastCoolEnableTime(time.time())
             self.control_pin.value = CONTROL_COOL
             self.power_pin.value = POWER_TEMP
@@ -101,7 +101,7 @@ class HVACController(object):
         # Safety measure - do not disable cooling unless it's been
         # on for some amount of time
         if self.is_cool_on:
-            if self.recent_activity.canToggleCool():
+            if self.recent_activity.canToggle():
                 self.recent_activity.setLastCoolDisableTime(time.time())
                 self.power_pin.value = POWER_FAN
             else:
@@ -109,7 +109,7 @@ class HVACController(object):
         # Safety measure - do not disable heating unless it's been
         # on for some amount of time
         elif self.is_heat_on:
-            if self.recent_activity.canToggleHeat():
+            if self.recent_activity.canToggle():
                 self.recent_activity.setLastHeatDisableTime(time.time())
                 self.power_pin.value = POWER_FAN
             else:

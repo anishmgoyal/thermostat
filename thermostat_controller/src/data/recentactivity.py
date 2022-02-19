@@ -17,6 +17,19 @@ class RecentActivity(object):
         with open(self.file_name, 'r') as recent_activity:
             self.recent_activity = json.load(recent_activity)
 
+    def canToggle(self) -> bool:
+        """ Check that it's safe to toggle the thermostat -
+            make sure that we haven't changed anything for 5 minutes
+            to prevent short cycling """
+        now = time.time()
+        most_recent_action_time = max(
+            self.getLastCoolDisableTime(),
+            self.getLastCoolEnableTime(),
+            self.getLastHeatDisableTime(),
+            self.getLastHeatEnableTime())
+        elapsed = now - most_recent_action_time
+        return elapsed > CHANGE_THRESHOLD_TIME_SECONDS
+
     def canToggleHeat(self) -> bool:
         """ Make sure that cooling has been off for at least 5
             mins, and that we haven't recently cycled heating """
@@ -30,8 +43,8 @@ class RecentActivity(object):
 
         return (
             cool_enable <= cool_disable and
-            now - cool_disable <= CHANGE_THRESHOLD_TIME_SECONDS and
-            now - max(heat_enable, heat_disable) <= CHANGE_THRESHOLD_TIME_SECONDS)
+            now - cool_disable > CHANGE_THRESHOLD_TIME_SECONDS and
+            now - max(heat_enable, heat_disable) > CHANGE_THRESHOLD_TIME_SECONDS)
 
     def canToggleCool(self) -> bool:
         """ Make sure that heating has been off for at least 5
@@ -46,8 +59,8 @@ class RecentActivity(object):
 
         return (
             heat_enable <= heat_disable and
-            now - heat_disable <= CHANGE_THRESHOLD_TIME_SECONDS and
-            now - max(cool_enable, cool_disable) <= CHANGE_THRESHOLD_TIME_SECONDS)
+            now - heat_disable > CHANGE_THRESHOLD_TIME_SECONDS and
+            now - max(cool_enable, cool_disable) > CHANGE_THRESHOLD_TIME_SECONDS)
 
     """
     Getters and setters
