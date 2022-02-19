@@ -1,3 +1,4 @@
+import logging
 import data.filenames as filenames
 import json
 import time
@@ -24,6 +25,8 @@ class RecentActivity(object):
         heat_enable = self.getLastHeatEnableTime()
         cool_disable = self.getLastCoolDisableTime()
         cool_enable = self.getLastCoolEnableTime()
+        logging.debug("heat dis {}, en {}, cool dis {}, en {}, now {}".format(
+            heat_disable, heat_enable, cool_disable, cool_enable, now))
 
         return (
             cool_enable <= cool_disable and
@@ -38,6 +41,8 @@ class RecentActivity(object):
         heat_enable = self.getLastHeatEnableTime()
         cool_disable = self.getLastCoolDisableTime()
         cool_enable = self.getLastCoolEnableTime()
+        logging.debug("heat dis {}, en {}, cool dis {}, en {}, now {}".format(
+            heat_disable, heat_enable, cool_disable, cool_enable, now))
 
         return (
             heat_enable <= heat_disable and
