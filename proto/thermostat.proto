@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+package thermostat;
+
+/** Provides ad-hoc configuration for the thermostat,
+    outside of standard run-data **/
+message ThermostatConfiguration {
+    /** Defines the threshold to be applied to any thermostat threshold.
+        For example, if the heat kicks on at 72 degrees, we'll wait until
+        the temperature reaches (72 - thermostat_epsilon) to engage the
+        heat, etc. **/
+    float thermostat_epsilon = 1;
+}
+
+/** Defines what mode a set of thermostat settings
+    should apply to **/
+enum ThermostatMode {
+    /** Will run the heating unit until the threshold
+        is reached **/
+    HEAT = 0;
+    /** Will run the cooling unit until the threshold
+        is reached **/
+    COOL = 1;
+    /** Will heat up to a lower bound threshold, and
+        cool to an upper bound threshold **/
+    HEAT_AND_COOL = 2;
+    /** Will independently operate the fan **/
+    FAN = 3;
+    /** Will shut the HVAC system down **/
+    OFF = 4;
+}
+
+/** Defines how recent activity for the thermostat will be stored,
+    which will be used for preventing rapid changes to the furnace **/
+    message ThermostatRecentActivity {
+        /** A list of recent thermostat events (should store
+            about 5 events) **/
+        repeated ThermostatCircuitEvent events = 1;
+    }    
+
+/** Defines whether or not the thermostat is holding
+    the current temperature **/
+enum ThermostatBehavior {
+    /** Hold the current settings **/
+    HOLDING = 1;
+    /** Follow the defined schedule, if one exists **/
+    RUNNING_SCHEDULE = 2;
+}
+
+/** These settings apply to the thermostat in a single moment in time,
+    driving the circuits. Scheduling logic is not applied at this level **/
+message ThermostatSettings {
+    /** Current operational mode for the thermostat **/
+    ThermostatMode mode = 1;
+    /** Target temperature for the thermostat when cooling **/
+    int32 target_cool_temperature = 2;
+    /** Target temperature for the thermostat when warning **/
+    int32 target_heat_temperature = 3;
+}
+
+/** Defines a schedule with per-day settings for the thermostat **/
+message ThermostatSchedule {
+    /** Define shared constants for days of the week **/
+    enum Day {
+        SUNDAY = 0;
+        MONDAY = 1;
+        TUESDAY = 2;
+        WEDNESDAY = 3;
+        THURSDAY = 4;
+        FRIDAY = 5;
+        SATURDAY = 6;
+    }
+
+    message ScheduleEntry {
+        /** Settings to apply **/
+        ThermostatSettings settings = 1;
+        /** Day that these settings apply to **/
+        Day day_of_week = 2;
+        /** Time of day to apply these settings (hours) **/
+        int32 start_hour = 3;
+        /** Time of day to apply these settings (minutes) **/
+        int32 start_minute = 4;
+    }
+
+    /** A list of entries to store for scheduling. This may
+        include schedules for different days and modes, and
+        should be parsed by the schedule builder, as well as
+        by thermostat control logic **/
+    repeated ScheduleEntry entries = 1;
+}
+
+/** This specifies current settings applied to the thermostat,
+    beyond just the thermostat temperature settings **/
+message ThermostatRunData {
+    /** Specifies the current settings applied to the thermostat **/
+    ThermostatSettings current_settings = 1;
+    /** Defines whether or not the thermostat is holding,
+        or is following the schedule **/
+    ThermostatBehavior behavior = 2;
+}

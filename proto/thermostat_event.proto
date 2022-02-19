@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package thermostat;
+
+/** Circuits that the thermostat can operate **/
+enum ThermostatCircuit {
+    HEAT = 1;
+    COOL = 2;
+    FAN = 3;
+}
+
+/** Defines whether or not a thermostat circuit
+    is ON or OFF **/
+enum ThermostatCircuitState {
+    ON = 1;
+    OFF = 2;
+}
+
+message ThermostatCircuitEvent {
+    /** When the event occurred, UTC time **/
+    int64 timestamp = 1;
+    /** Circuit that was toggled **/
+    ThermostatCircuit circuit = 2;
+    /** The state (ON/OFF) that was set on the circuit **/
+    ThermostatCircuitState new_state = 3;
+}
+
+/** Provides support for receiving external
+    thermostat sensor events **/
+message ThermostatSensorEvent {
+    /** Mac address of the external sensor **/
+    string mac_addr = 1;
+    /** When the sensor reading was collected, UTC time **/
+    int64 sensor_reading_timestamp = 2;
+    /** Temperature reading, expressed as a string; will have to
+        be parsed back to float **/
+    string temperature_celsius = 3;
+    /** Humidity reading, expressed as a string; empty if not
+        calculated; will have to be parsed back to float **/
+    string relative_humidity = 4;
+}
+
+/** Defines a type of change in the current applied settings **/
+enum ThermostatRunDataChange {
+    BEHAVIOR_CHANGE = 1;
+    MODE_CHANGE = 2;
+    SCHEDULE_CHANGE = 3;
+}
+
+/** Indicates a change in data for the thermostat **/
+message ThermostatRunDataChangeEvent {
+    /** Informs the control module of the type of change that was made **/
+    ThermostatRunDataChange change_type = 1;
+}
+
+/** Wraps a thermostat event sent between thermostat processes **/
+message ThermostatEvent {
+    oneof event {
+        /** Gives information about a change in circuit state **/
+        ThermostatCircuitEvent circuit_change = 1;
+        /** Gives information about a reading from a sensor **/
+        ThermostatSensorEvent sensor_reading = 2;
+        /** Gives information about a change in thermostat run data **/
+        ThermostatRunDataChangeEvent setting_change = 3;
+    }
+}
+
+    
