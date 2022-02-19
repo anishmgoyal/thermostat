@@ -7,6 +7,7 @@ CFG_ENTRIES = 'entries'
 CFG_DAY_OF_WEEK = 'day_of_week'
 CFG_START_HOUR = 'start_hour'
 CFG_START_MINUTE = 'start_minute'
+CFG_MODE = 'mode'
 CFG_SETTINGS = 'settings'
 
 
@@ -20,6 +21,11 @@ class ScheduleEntry(object):
             return settings.Settings(self.entry[CFG_SETTINGS])
         else:
             return settings.Settings({})
+
+    def getMode(self):
+        if CFG_MODE in self.entry:
+            return self.entry[CFG_MODE]
+        return None
 
     def getDayOfWeek(self):
         if CFG_DAY_OF_WEEK in self.entry:
@@ -91,12 +97,13 @@ class Schedule(object):
 
         self.entries_by_mode = {}
         for entry in entries:
-            mode = entry.getSettings().getMode()
-            if entry.getDayOfWeek() is None or \
+            if entry.getMode() is None or \
+               entry.getDayOfWeek() is None or \
                entry.getStartHour() is None or \
                entry.getStartMinute() is None:
                 continue
 
+            mode = entry.getMode()
             if mode not in self.entries_by_mode:
                 self.entries_by_mode[mode] = []
             self.entries_by_mode[mode].append(entry)
