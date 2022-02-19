@@ -40,16 +40,16 @@ class AutoEvaluator(evaluator.Evaluator):
 
         elif controller.is_cool_on:
             if coolevaluator.CoolEvaluator.shouldDisableCooling(
-                    sensor, curr_settings, config):
+                    temp_c, curr_settings, config):
                 logging.debug("Shutting down cooler")
                 controller.shutDown()
 
         elif heatevaluator.HeatEvaluator.shouldEnableHeat(
-                sensor, curr_settings, config):
+                temp_c, curr_settings, config):
             logging.debug("Enabling heater")
             controller.enableHeat()
 
         elif coolevaluator.CoolEvaluator.shouldEnableCooling(
-                sensor, curr_settings, config):
+                temp_c, curr_settings, config):
             logging.debug("Enabling cooler")
             controller.enableCool()

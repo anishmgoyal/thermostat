@@ -7,10 +7,9 @@ import logging
 class CoolEvaluator(evaluator.Evaluator):
     @staticmethod
     def shouldDisableCooling(
-            sensor: circuit.TemperatureSensor,
+            temp_c: float,
             settings: data.Settings,
             config: data.Config) -> bool:
-        temp_c = sensor.getTemperature()
         target_temp = settings.getTargetCoolTemp()
         should_disable = target_temp is None
         if not should_disable:
@@ -22,10 +21,9 @@ class CoolEvaluator(evaluator.Evaluator):
 
     @staticmethod
     def shouldEnableCooling(
-            sensor: circuit.TemperatureSensor,
+            temp_c: float,
             settings: data.Settings,
             config: data.Config) -> bool:
-        temp_c = sensor.getTemperature()
         target_temp = settings.getTargetCoolTemp()
         should_enable = target_temp is not None
         if should_enable:

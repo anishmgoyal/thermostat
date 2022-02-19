@@ -7,10 +7,9 @@ import logging
 class HeatEvaluator(evaluator.Evaluator):
     @staticmethod
     def shouldDisableHeat(
-            sensor: circuit.TemperatureSensor,
+            temp_c: float,
             settings: data.Settings,
             config: data.Config) -> bool:
-        temp_c = sensor.getTemperature()
         target_temp = settings.getTargetHeatTemp()
         should_disable = target_temp is None
         if not should_disable:
@@ -22,10 +21,9 @@ class HeatEvaluator(evaluator.Evaluator):
 
     @staticmethod
     def shouldEnableHeat(
-            sensor: circuit.TemperatureSensor,
+            temp_c: float,
             settings: data.Settings,
             config: data.Config) -> bool:
-        temp_c = sensor.getTemperature()
         target_temp = settings.getTargetHeatTemp()
         should_enable = target_temp is not None
         if should_enable:
