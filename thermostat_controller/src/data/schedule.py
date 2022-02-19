@@ -91,7 +91,7 @@ class Schedule(object):
                     today.weekday(), today.hour, today.minute):
                 lo = mid + 1
             else:
-                return entries[mid]
+                return entries[mid].getSettings()
         return None
 
     def _loadSchedule(self):
