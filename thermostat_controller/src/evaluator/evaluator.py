@@ -25,11 +25,14 @@ class Evaluator(object):
                           run_data: data.RunData,
                           schedule: data.Schedule):
         if run_data.getBehavior() == tstatcommon.constants.BEHAVE_SCHED:
+            logging.debug("Looking for settings from schedule")
             active_schedule = schedule.getActiveEntry(run_data.getActiveMode())
             if active_schedule is not None:
                 logging.debug("Active settings: {}".format(
                     active_schedule.settings))
                 return active_schedule
+            else:
+                logging.debug("Failed to load settings from schedule")
         logging.debug("Active settings: {}".format(
             run_data.getSettings().settings))
         return run_data.getSettings()

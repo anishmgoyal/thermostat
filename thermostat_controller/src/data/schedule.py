@@ -2,6 +2,7 @@ import data.filenames as filenames
 import data.settings as settings
 import datetime
 import json
+import logging
 
 CFG_ENTRIES = 'entries'
 CFG_DAY_OF_WEEK = 'day_of_week'
@@ -115,3 +116,5 @@ class Schedule(object):
                 minute = entry.getStartMinute()
                 return (day, hour, minute)
             self.entries_by_mode[mode] = sorted(entries, key=entryKey)
+
+        logging.debug("Loaded schedule: {}".format(self.entries_by_mode))
