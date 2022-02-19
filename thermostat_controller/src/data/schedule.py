@@ -59,6 +59,9 @@ class ScheduleEntry(object):
     def __str__(self):
         return self.entry
 
+    def __repr__(self):
+        return str(self)
+
 
 class Schedule(object):
     def __init__(self):
