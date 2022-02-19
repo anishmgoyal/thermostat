@@ -3,7 +3,6 @@ import data
 import evaluator.coolevaluator as coolevaluator
 import evaluator.evaluator as evaluator
 import evaluator.heatevaluator as heatevaluator
-import heatevaluator
 import logging
 
 

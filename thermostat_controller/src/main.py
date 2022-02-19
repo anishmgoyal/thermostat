@@ -28,17 +28,22 @@ if __name__ == '__main__':
 
     while True:
         mode = run_data.getActiveMode()
+        logging.debug("Active mode: {}".format(mode))
         if mode == tstatcommon.constants.MODE_AUTO:
+            logging.debug("Running in auto mode")
             curr_evaluator = evaluator.AutoEvaluator()
         elif mode == tstatcommon.constants.MODE_COOL:
+            logging.debug("Running in cooling mode")
             curr_evaluator = evaluator.CoolEvaluator()
         elif mode == tstatcommon.constants.MODE_HEAT:
+            logging.debug("Running in heating mode")
             curr_evaluator = evaluator.HeatEvaluator()
         else:
             # MODE_OFF
+            logging.debug("Thermostat is off")
             curr_evaluator = evaluator.OffEvaluator()
 
-        evaluator.evaluate(
+        curr_evaluator.evaluate(
             config,
             controller,
             recent_activity,
