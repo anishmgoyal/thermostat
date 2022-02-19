@@ -75,13 +75,14 @@ class Schedule(object):
         entries = self.entries_by_mode[mode]
 
         today = datetime.datetime.now()
+        # If we're at the start of the week, we might need to steal the
+        # settings from the end of last week
         if len(entries) > 0 and \
            entries[0].isAfter(today.weekday(), today.hour, today.minute):
             return entries[-1]
 
-        hi = len(entries)
-        lo = 0
-        while lo < hi:
+        lo, hi = 0, len(entries) - 1
+        while lo <= hi:
             mid = (lo + hi) // 2
             if entries[mid].isAfter(today.weekday(), today.hour, today.minute):
                 hi = mid - 1
