@@ -1,8 +1,8 @@
 import board
-import data
 import digitalio
 import logging
 import time
+import tstatcommon.data as data
 import RPi.GPIO as gpio
 
 HEAT_PIN = board.D21

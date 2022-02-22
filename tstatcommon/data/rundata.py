@@ -6,14 +6,12 @@ import tstatcommon.constants
 CFG_ACTIVE_MODE = 'active_mode'
 CFG_BEHAVIOR = 'behavior'
 CFG_FAN_ENABLED = 'fan_enabled'
-CFG_SETTINGS = 'settings'
 
 
 class RunData(object):
     def __init__(self):
         self.file_name = filenames.RUNDATA_FILE
-        with open(self.file_name, 'r') as run_data:
-            self.run_data = json.load(run_data)
+        self.reload()
 
     def getActiveMode(self) -> int:
         if CFG_ACTIVE_MODE in self.run_data:
@@ -32,7 +30,11 @@ class RunData(object):
         return DEFAULT_FAN_ENABLED
 
     def getSettings(self):
-        if CFG_SETTINGS not in self.run_data:
+        if settings.CFG_SETTINGS not in self.run_data:
             return settings.Settings({})
         else:
-            return settings.Settings(self.run_data[CFG_SETTINGS])
+            return settings.Settings(self.run_data[settings.CFG_SETTINGS])
+
+    def reload(self):
+        with open(self.file_name, 'r') as run_data:
+            self.run_data = json.load(run_data)

@@ -1,7 +1,7 @@
 import circuit
-import data
 import evaluator.evaluator as evaluator
 import logging
+import tstatcommon.data as data
 
 
 class HeatEvaluator(evaluator.Evaluator):

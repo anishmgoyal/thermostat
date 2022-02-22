@@ -1,9 +1,9 @@
 import circuit
-import data
 import evaluator.coolevaluator as coolevaluator
 import evaluator.evaluator as evaluator
 import evaluator.heatevaluator as heatevaluator
 import logging
+import tstatcommon.data as data
 
 
 class AutoEvaluator(evaluator.Evaluator):

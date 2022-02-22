@@ -1,6 +1,7 @@
 import logging
 import data.filenames as filenames
 import json
+import os
 import time
 
 CFG_LAST_HEAT_DISABLE_TIME = 'last_heat_disable_time'
@@ -102,5 +103,7 @@ class RecentActivity(object):
 
     def _setRecentTimeProp(self, prop_name: str, time: int):
         self.recent_activity[prop_name] = time
-        with open(self.file_name, 'w') as recent_activity:
+        swap_file = filenames.getSwapFile(self.file_name)
+        with open(swap_file, 'w') as recent_activity:
             json.dump(self.recent_activity, recent_activity)
+        os.replace(swap_file, self.file_name)

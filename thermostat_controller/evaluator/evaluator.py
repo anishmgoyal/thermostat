@@ -1,7 +1,7 @@
 import circuit
-import data
 import logging
 import tstatcommon
+import tstatcommon.data as data
 
 
 class Evaluator(object):

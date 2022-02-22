@@ -1,5 +1,6 @@
 from tstatcommon.constants import MODE_OFF
 
+CFG_SETTINGS = 'settings'
 CFG_TARGET_COOL_TEMP = 'target_cool_temp'
 CFG_TARGET_HEAT_TEMP = 'target_heat_temp'
 

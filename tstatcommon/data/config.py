@@ -7,8 +7,7 @@ CFG_THERMOSTAT_EPSILON = 'thermostat_epsilon'
 class Config(object):
     def __init__(self):
         self.file_name = filenames.CONFIG_FILE
-        with open(self.file_name, 'r') as settings:
-            self.settings = json.load(settings)
+        self.reload()
 
     def getEpsilon(self) -> float:
         """ Gets the threshold above / below a target temperature
@@ -17,3 +16,7 @@ class Config(object):
             return self.settings[CFG_THERMOSTAT_EPSILON]
         DEFAULT_EPSILON = 0.5
         return DEFAULT_EPSILON
+
+    def reload(self):
+        with open(self.file_name, 'r') as settings:
+            self.settings = json.load(settings)
