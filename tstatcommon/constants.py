@@ -19,3 +19,10 @@ ALL_CIRCUIT_STATES = set([CIRCUIT_ON, CIRCUIT_OFF])
 
 # Set of all supported modes
 ALL_MODES = set([MODE_OFF, MODE_COOL, MODE_HEAT, MODE_AUTO])
+
+# Constants for different display units
+DISPLAY_FAHREN = 'f'
+DISPLAY_CELSIUS = 'c'
+
+# Set of all supported display units
+ALL_DISPLAY_UNITS = set([DISPLAY_FAHREN, DISPLAY_CELSIUS])

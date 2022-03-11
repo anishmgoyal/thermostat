@@ -1,0 +1,34 @@
+.menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+}
+
+.menu .menu-buttons {
+    display: flex;
+    flex-basis: 35%;
+    flex-direction: column;
+    flex-grow: 0;
+    flex-shrink: 0;
+    gap: var(--spacing-half);
+}
+
+.menu button {
+    background-color: var(--secondary-background);
+    border: none;
+    border-radius: var(--spacing-half);
+    flex: 1;
+    outline: none;
+    padding: var(--spacing-one-plus-half) 0;
+}
+
+.menu button:disabled {
+    background-color: var(--secondary-background-dark);
+}

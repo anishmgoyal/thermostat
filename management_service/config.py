@@ -1,6 +1,6 @@
 from flask import abort, request
 from main import app, mqtt_client
-from tstatcommon import data, mqttconstants
+from tstatcommon import constants, data, mqttconstants
 import os
 import util_validators
 
@@ -30,6 +30,11 @@ def validateConfig(config):
             config[data.CFG_THERMOSTAT_EPSILON],
             0.2,
             2.0):
+        return False
+
+    if data.CFG_DISPLAY_UNITS not in config:
+        return False
+    if config[data.CFG_DISPLAY_UNITS] not in constants.ALL_DISPLAY_UNITS:
         return False
 
     return True

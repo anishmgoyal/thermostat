@@ -1,4 +1,5 @@
 import circuit
+import controlmqtt
 import evaluator.coolevaluator as coolevaluator
 import evaluator.evaluator as evaluator
 import evaluator.heatevaluator as heatevaluator
@@ -9,6 +10,7 @@ import tstatcommon.data as data
 class AutoEvaluator(evaluator.Evaluator):
     def evaluate(
             self,
+            mqtt_client: controlmqtt.ControlMQTTClient,
             config: data.Config,
             controller: circuit.HVACController,
             recent_activity: data.RecentActivity,
@@ -16,7 +18,8 @@ class AutoEvaluator(evaluator.Evaluator):
             schedule: data.Schedule,
             sensor: circuit.TemperatureSensor):
         super().evaluate(
-            config, controller, recent_activity, run_data, schedule, sensor)
+            mqtt_client, config, controller, recent_activity, run_data,
+            schedule, sensor)
 
         # We need to be able to do one of these two things to do anything useful
         # in this mode

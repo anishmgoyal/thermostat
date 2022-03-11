@@ -28,7 +28,7 @@ class ControlMQTTClient(object):
         self.run_data = run_data
         self.schedule = schedule
 
-        def onMessage(client: mqtt.Client, userData, message: mqtt.MQTTMessage):
+        def onMessage(client: mqtt.Client, userdata, message: mqtt.MQTTMessage):
             self.takeEvent(json.loads(message.payload))
 
         self.client = mqtt.Client(THERMOSTAT_CLIENT_ID)
@@ -44,6 +44,13 @@ class ControlMQTTClient(object):
         self.client.unsubscribe(mqttconstants.MQTT_TOPIC)
         self.client.loop_stop()
         self.client.disconnect()
+
+    def sendEvent(self, event: Dict[str, Any]):
+        """ Sends an MQTT event to the common topic """
+        if mqttconstants.CFG_EVENT_TYPE not in event:
+            logging.error("Ignoring event with no type: {}".format(event))
+            return
+        self.client.publish(mqttconstants.MQTT_TOPIC, json.dumps(event))
 
     def takeEvent(self, event: Dict[str, Any]):
         """ Parses and acts on an MQTT event """

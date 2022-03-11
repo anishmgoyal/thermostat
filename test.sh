@@ -1,0 +1,2 @@
+echo $(realpath $0)
+

@@ -2,4 +2,5 @@ adafruit_circuitpython_dht>=3.7.0
 flask>=2.0.3
 flask-sse>=1.0.0
 paho-mqtt>=1.6.1
+requests>=2.27.1
 RPi.GPIO>=0.7.0

@@ -1,4 +1,5 @@
 import circuit
+import controlmqtt
 import evaluator.evaluator as evaluator
 import logging
 import tstatcommon.data as data
@@ -35,6 +36,7 @@ class CoolEvaluator(evaluator.Evaluator):
 
     def evaluate(
             self,
+            mqtt_client: controlmqtt.ControlMQTTClient,
             config: data.Config,
             controller: circuit.HVACController,
             recent_activity: data.RecentActivity,
@@ -42,7 +44,8 @@ class CoolEvaluator(evaluator.Evaluator):
             schedule: data.Schedule,
             sensor: circuit.TemperatureSensor):
         super().evaluate(
-            config, controller, recent_activity, run_data, schedule, sensor)
+            mqtt_client, config, controller, recent_activity, run_data,
+            schedule, sensor)
 
         # If we can't make any changes, skip this iteration
         if not recent_activity.canToggle():

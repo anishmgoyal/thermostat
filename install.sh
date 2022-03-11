@@ -1,6 +1,9 @@
 #!/bin/bash
-
+CURRENT_DIR=$(dirname $0)
 BASE_DIR=/var/lib/thermostat
+
+# Generate any git hash related files
+./generate_git_files.sh
 
 # Copy requirements
 python3 -m pip install -r requirements.txt
