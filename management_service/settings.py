@@ -2,6 +2,8 @@ from main import app
 from tstatcommon import data
 import util_validators
 
+MIN_ALLOWED_TEMP_DIFF = 2.2222 # in celsius, 4 in fahremheit
+
 def validateSettings(settings,
                      require_heat=False,
                      require_cool=False):
@@ -26,6 +28,17 @@ def validateSettings(settings,
     elif require_heat:
         app.logger.info('settings is missing heating')
         return False
+
+    if require_heat and require_cool:
+        # verify that we have the required gap
+        diff = settings[data.CFG_TARGET_COOL_TEMP] - \
+               settings[data.CFG_TARGET_HEAT_TEMP]
+
+        # don't use absolute value; cool temp should be greater than heat temp
+        if diff < MIN_ALLOWED_TEMP_DIFF:
+            app.logger.info(
+                'cooling / heat temps are too close: {}'.format(settings))
+            return False
 
     if not require_heat and not require_cool:
         app.logger.info('neither heat nor cool was required, which is invalid')

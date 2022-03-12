@@ -35,6 +35,9 @@ const runDataHelpers = {
         }[runData['active_mode']];
         thermostatComponent.heatingControl.setVisible(showHeat);
         thermostatComponent.coolingControl.setVisible(showCool);
+
+        // TODO: Disable the plus / minus button if it would make the temp
+        // diff between heat and cool too small
     
         const fanStr = {
             true: 'On',
@@ -53,23 +56,39 @@ const runDataHelpers = {
         thermostatComponent.modeButton.updateValue(
             behaviorStr, behaviorClass);
     
-        const targetHeat = runData['settings']['target_heat_temp'];
+        const appliedSettings = runData['settings'][runData['active_mode']];
+        const targetHeat = appliedSettings?.['target_heat_temp'];
         if (targetHeat != null) {
             thermostatComponent.heatingControl.updateValue(targetHeat);
         }
     
-        const targetCool = runData['settings']['target_cool_temp'];
+        const targetCool = appliedSettings?.['target_cool_temp'];
         if (targetCool != null) {
             thermostatComponent.coolingControl.updateValue(targetCool);
         }
     },
 
     doTempChange(key, multiplier) {
+        if (runDataManager.isUpdating) { // Don't change a stale copy
+            return;
+        }
+
+        const runData = runDataManager.getWorkingCopy();
+        const activeMode = runData['active_mode'];
+        if (activeMode === MODE_OFF) {
+            return; // Mode 'off' is always null
+        }
+
         const units = configManager.snapshot['display_units'];
         const increment = units === DISPLAY_CELSIUS ? 1 : 5/9;
         const changeAmount = increment * multiplier;
-        runDataManager.snapshot['settings'][key] += changeAmount;
-        runDataManager.update(runDataManager.snapshot);
+
+        const settingsToChange =
+            runData['settings'][activeMode];
+        if (settingsToChange?.hasOwnProperty(key)) {
+            settingsToChange[key] += changeAmount;
+        }
+        runDataManager.update(runData);
     },
 
     registerTempControl(tempControl, key) {
@@ -81,17 +100,27 @@ const runDataHelpers = {
 
     registerSystemButton(thermostatComponent) {
         thermostatComponent.systemButton.button.addEventListener('click', () => {
-            runDataManager.snapshot['active_mode'] =
-                (runDataManager.snapshot['active_mode'] + 1) % 4;
-            runDataManager.update(runDataManager.snapshot);
+            if (runDataManager.isUpdating) {
+                return;
+            }
+            
+            const runData = runDataManager.getWorkingCopy();
+            runData['active_mode'] =
+                (runData['active_mode'] + 1) % 4;
+            runDataManager.update(runData);
         });
     },
 
     registerFanButton(thermostatComponent) {
         thermostatComponent.fanButton.button.addEventListener('click', () => {
-            runDataManager.snapshot['fan_enabled'] =
-                !runDataManager.snapshot['fan_enabled'];
-            runDataManager.update(runDataManager.snapshot);
+            if (runDataManager.isUpdating) {
+                return;
+            }
+
+            const runData = runDataManager.getWorkingCopy();
+            runData['fan_enabled'] =
+                !runData['fan_enabled'];
+            runDataManager.update(runData);
         });
     },
 

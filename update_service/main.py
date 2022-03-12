@@ -8,7 +8,7 @@ from flask import Flask
 app = Flask(__name__)
 
 def getGitOrgAndRepo():
-    git_origin_pattern = r"(:|/)(.*)/(.*?)(\.git)?$"
+    git_origin_pattern = r"(:|/)([^/:]*)/([^:/]*?)(\.git)?$"
     matches = re.search(git_origin_pattern, git_info.GIT_ORIGIN)
     return matches.group(2), matches.group(3)
 

@@ -25,6 +25,7 @@
     border: none;
     border-radius: var(--spacing-half);
     flex: 1;
+    font-size: var(--font-size-base);
     outline: none;
     padding: var(--spacing-one-plus-half) 0;
 }

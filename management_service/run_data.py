@@ -1,6 +1,6 @@
 from flask import abort, request, Response
 from main import app, mqtt_client
-from tstatcommon import data, mqttconstants
+from tstatcommon import constants, data, mqttconstants
 import json
 import os
 import settings
@@ -47,7 +47,32 @@ def validateRunData(run_data) -> bool:
 
     if data.CFG_SETTINGS not in run_data:
         return False
+    
+    if len(constants.ALL_MODES) != 4:
+        raise RuntimeError(
+            'Implemented to support 4 modes, got a different number')
+
+    if len(run_data[data.CFG_SETTINGS]) != len(constants.ALL_MODES):
+        return False
+
+    # validate settings for each supported mode
+
+    if run_data[data.CFG_SETTINGS][constants.MODE_OFF] is not None:
+        return False
+
     if not settings.validateSettings(
-            run_data[data.CFG_SETTINGS], require_cool=True, require_heat=True):
+            run_data[data.CFG_SETTINGS][constants.MODE_COOL],
+            require_cool=True):
+        return False
+
+    if not settings.validateSettings(
+            run_data[data.CFG_SETTINGS][constants.MODE_HEAT],
+            require_heat=True):
+        return False
+
+    if not settings.validateSettings(
+            run_data[data.CFG_SETTINGS][constants.MODE_AUTO],
+            require_cool=True,
+            require_heat=True):
         return False
     return True

@@ -65,3 +65,10 @@ cat > update_service/git_info.py << EOF
 GIT_ORIGIN = '$UPSTREAM'
 
 EOF
+
+cat > user_interface/git_info.js << EOF
+// GENERATED FILE, DO NOT MODIFY
+
+const BUILD_VER = '$HASH'
+
+EOF

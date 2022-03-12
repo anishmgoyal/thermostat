@@ -58,6 +58,8 @@ class Evaluator(object):
                 return active_schedule
             else:
                 logging.debug("Failed to load settings from schedule")
+
+        active_settings = run_data.getSettings()
         logging.debug("Active settings: {}".format(
-            run_data.getSettings().settings))
-        return run_data.getSettings()
+            active_settings.settings))
+        return active_settings

@@ -30,10 +30,19 @@ class RunData(object):
         return DEFAULT_FAN_ENABLED
 
     def getSettings(self):
+        """ Get the settings for the current active mode """
+        active_mode = self.getActiveMode()
+        if active_mode == tstatcommon.constants.MODE_OFF:
+            return settings.Settings({}) # special case. Settings are null for
+                                         # mode "off"
         if settings.CFG_SETTINGS not in self.run_data:
             return settings.Settings({})
+        elif active_mode not in range(
+                len(self.run_data[settings.CFG_SETTINGS])):
+            return settings.Settings({})
         else:
-            return settings.Settings(self.run_data[settings.CFG_SETTINGS])
+            return settings.Settings(
+                self.run_data[settings.CFG_SETTINGS][active_mode])
 
     def reload(self):
         with open(self.file_name, 'r') as run_data:

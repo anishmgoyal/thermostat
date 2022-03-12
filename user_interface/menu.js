@@ -20,6 +20,11 @@ function createMenuComponent() {
         button.addEventListener('click', () => menuComponent.close());
     }
 
+    function setupUpdateButton(menuComponent) {
+        const button = menuComponent.updateButton;
+        button.addEventListener('click', () => versionManager.runUpdate());
+    }
+
     function setupOverlay(menuComponent) {
         const overlay = document.getElementById('menu-overlay');
         overlay.addEventListener('click', event => {
@@ -30,6 +35,21 @@ function createMenuComponent() {
             menuComponent.close();
         });
     }
+
+    function setUpdateButton(isEnabled, updateButton) {
+        if (isEnabled) {
+            updateButton.innerText = 'Update';
+            updateButton.disabled = false;
+        } else {
+            updateButton.innerText = 'No Update Available';
+            updateButton.disabled = true;
+        }
+    };
+
+    async function checkForUpdates(menuComponent) {
+        const ver = await versionManager.getCurrentHeadVersion();
+        setUpdateButton(ver !== BUILD_VER, menuComponent.updateButton);
+    };
 
     return {
         register(thermostatComponent) {
@@ -56,6 +76,8 @@ function createMenuComponent() {
 
             setupMenuCancelButton(this);
             setupOverlay(this);
+            setupUpdateButton(this);
+            checkForUpdates(this);
 
             this.timeout = setTimeout(
                 () => this.close(), MENU_COMPONENT_TIMEOUT);
@@ -74,6 +96,7 @@ function createMenuComponent() {
                 this.timeout = undefined;
             }
         },
+
     }
 }
 

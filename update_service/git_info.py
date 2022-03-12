@@ -1,4 +1,4 @@
 ## GENERATED FILE, DO NOT MODIFY
 
-GIT_ORIGIN = 'git@github.com:anishmgoyal/thermostat.git'
+GIT_ORIGIN = 'https://github.com/anishmgoyal/thermostat.git'
 

@@ -3,7 +3,7 @@
 import json
 from main import app
 
-BUILD_VER = 'de5e0cf84b61af54fec98df8c299bf4199b3494f'
+BUILD_VER = 'ab8763c67dd450c43f01b4b9bf2f58fabf0005f6'
 
 @app.route('/build_info')
 def buildInfo():
