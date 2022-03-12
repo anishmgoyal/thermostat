@@ -1,5 +1,5 @@
 import logging
-import data.filenames as filenames
+import tstatcommon.data.filenames as filenames
 import json
 import os
 import time

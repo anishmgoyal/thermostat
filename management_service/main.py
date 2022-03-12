@@ -4,6 +4,10 @@ import util_mqtt
 app = Flask(__name__)
 mqtt_client = util_mqtt.ServiceMQTTClient()
 
-# TODO: Consider adding @app.before_request to check a request signature
-# This service is intended to run behind a firewall, but it is good practice
-# to use signed requests
+import config
+import events
+import run_data
+import schedule
+
+if __name__ == '__main__':
+    app.run(debug = True)

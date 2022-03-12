@@ -77,4 +77,4 @@ function createMenuComponent() {
     }
 }
 
-window.menuComponent = createMenuComponent();
+const menuComponent = createMenuComponent();

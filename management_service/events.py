@@ -6,4 +6,4 @@ from main import app, mqtt_client
 def events():
     consumer = util_mqtt.ServiceMQTTConsumer()
     mqtt_client.addConsumer(consumer)
-    Response(consumer.consume(), mimetype="text/event-stream")
+    return Response(consumer.consume(), mimetype="text/event-stream")

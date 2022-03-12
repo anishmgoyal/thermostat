@@ -2,7 +2,6 @@
 <html>
     <head>
         <title>Thermostat Control</title>
-        <script type="text/javascript" src="thermostat.js"></script>
         <link rel="stylesheet" type="text/css" href="thermostat.css" />
     </head>
     <body>
@@ -28,7 +27,9 @@
                     </div>
                     <div class="button-panel-item-controls">
                         <button id="cooling-control-minus">-</button>
-                        <span class="text-cooling">73</span>
+                        <span id="cooling-control-value" class="text-cool">
+                            73
+                        </span>
                         <button id="cooling-control-plus">+</button>
                     </div>
                 </div>
@@ -38,7 +39,9 @@
                     </div>
                     <div class="button-panel-item-controls">
                         <button id="heating-control-minus">-</button>
-                        <span class="text-heating">68</span>
+                        <span id="heating-control-value" class="text-heat">
+                            68
+                        </span>
                         <button id="heating-control-plus">+</button>
                     </div>
                 </div>
@@ -63,6 +66,20 @@
         </div>
 
         <link rel="stylesheet" type="text/css" href="menu.css" />
+
+        <!-- Framework -->
+        <script type="text/javascript" src="utils.js"></script>
+        <script type="text/javascript" src="constants.js"></script>
+        <script type="text/javascript" src="events.js"></script>
+
+        <!-- API -->
+        <script type="text/javascript" src="generic_api_manager.js"></script>
+        <script type="text/javascript" src="config.js"></script>
+        <script type="text/javascript" src="rundata.js"></script>
+        <script type="text/javascript" src="schedule.js"></script>
+
+        <!-- Components -->
         <script type="text/javascript" src="menu.js"></script>
+        <script type="text/javascript" src="thermostat.js"></script>
     </body>
 </html>

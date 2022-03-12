@@ -1,3 +1,5 @@
+LOCAL_DEV_MODE = True # enable for local dev mode
+
 # Defines the supported behaviors for the thermostat,
 # hold + schedule.
 (BEHAVE_HOLD, BEHAVE_SCHED) = range(2)

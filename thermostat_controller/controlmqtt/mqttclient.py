@@ -29,7 +29,7 @@ class ControlMQTTClient(object):
         self.schedule = schedule
 
         def onMessage(client: mqtt.Client, userdata, message: mqtt.MQTTMessage):
-            self.takeEvent(json.loads(message.payload))
+            self.takeEvent(json.loads(message.payload.decode('utf-8')))
 
         self.client = mqtt.Client(THERMOSTAT_CLIENT_ID)
         self.client.on_message = onMessage

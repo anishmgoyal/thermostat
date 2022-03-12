@@ -50,11 +50,11 @@ button {
     color: var(--auto-text);
 }
 
-.text-cooling {
+.text-cool {
     color: var(--cooling-text);
 }
 
-.text-heating {
+.text-heat {
     color: var(--heating-text);
 }
 

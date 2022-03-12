@@ -119,20 +119,32 @@ window.addEventListener('load', () => {
     component.systemButton.updateValue('Heat', 'text-heating');
     component.fanButton.updateValue('Auto');
 
-    window.baseThermostatComponent = component;
-    window.menuComponent.register(component);
+    const baseThermostatComponent = component;
+    menuComponent.register(component);
+    runDataManager.register(component);
 });
 
 const createTempControl = function(baseId) {
     const control = document.getElementById(baseId);
     const minusControl = document.getElementById(`${baseId}-minus`);
     const plusControl = document.getElementById(`${baseId}-plus`);
+    const valueElem = document.getElementById(`${baseId}-value`);
     return {
         hideControl() {
             control.style.display = 'none';
         },
         showControl() {
             control.style.display = '';
+        },
+        setVisible(visible) {
+            if (!visible) {
+                this.hideControl();
+            } else {
+                this.showControl();
+            }
+        },
+        updateValue(value) {
+            updateTempDivWithFahrenheit(valueElem, value);
         },
         minusControl,
         plusControl,

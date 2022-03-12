@@ -1,24 +1,28 @@
-from flask import abort, request
+import logging
+from flask import abort, request, Response
 from main import app, mqtt_client
 from tstatcommon import constants, data, mqttconstants
+import json
 import os
 import util_validators
 
 
-@app.request("/config", methods=["GET", "SET"])
+@app.route("/config", methods=["GET", "POST"])
 def config():
     if request.method == "GET":
+        logging.info('Fetching config file')
         with open(data.filenames.CONFIG_FILE, "r") as config:
-            return config.read()
+            return Response(config.read(), mimetype="text/json")
     else:
         new_config = request.get_json()
         swap_file = data.filenames.getSwapFile(data.filenames.CONFIG_FILE)
         if validateConfig(new_config):
             with open(swap_file, "w") as config:
-                config.write(new_config)
+                config.write(json.dumps(new_config, indent = 4))
             os.replace(swap_file, data.filenames.CONFIG_FILE)
 
             mqtt_client.publishUpdateConfig(mqttconstants.CONFIG_TYPE_BASE)
+            return ''
         else:
             abort(400)
 

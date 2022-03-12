@@ -1,5 +1,5 @@
-import logging
 import queue
+import logging
 import paho.mqtt.client as mqtt
 import json
 import uuid
@@ -12,14 +12,21 @@ class ServiceMQTTConsumer(object):
         self.is_open = True
         self.q = queue.Queue()
 
+        start_event = {
+            mqttconstants.CFG_EVENT_TYPE: mqttconstants.EVENT_CONSUMER_INIT
+        }
+        self.addValue(json.dumps(start_event))
+
     def addValue(self, value):
         self.q.put(value)
 
     def consume(self):
         try:
             while True:
-                yield "ev: {}\n\n".format(self.q.get())
+                yield "data: {}\n\n".format(self.q.get())
                 self.q.task_done()
+        except GeneratorExit:
+            self.is_open = False
         except:
             logging.exception("Consumer was killed, marking it closed")
             self.is_open = False
@@ -49,8 +56,11 @@ class ServiceMQTTClient(object):
             active_consumers = []
             for consumer in self.consumers:
                 if consumer.is_open:
-                    consumer.addValue(message.payload)
+                    consumer.addValue(message.payload.decode('utf-8'))
                     active_consumers.append(consumer)
+                else:
+                    logging.info('Evicting an inactive consumer')
+            logging.info("%d active consumers" % len(active_consumers))
             self.consumers = active_consumers
 
     def publishUpdateConfig(self, config_type):

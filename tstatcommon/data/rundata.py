@@ -1,5 +1,5 @@
-import data.filenames as filenames
-import data.settings as settings
+import tstatcommon.data.filenames as filenames
+import tstatcommon.data.settings as settings
 import json
 import tstatcommon.constants
 
