@@ -115,13 +115,22 @@ window.addEventListener('load', () => {
     };
 
     component.registerInterval(component.updateDateTime, 1000);
-    component.updateCurrentTemp(22);
     component.systemButton.updateValue('Heat', 'text-heating');
     component.fanButton.updateValue('Auto');
 
+    sseSubscription.filter('sensor_reading').subscribe(reading => {
+        if (reading['sensor_type'] !== 'temp') {
+            return; // No support for humidity for now
+        }
+
+        if (reading['sensor_id'] === MAIN_TEMP_SENSOR_ID) {
+            component.updateCurrentTemp(reading['sensor_value'])
+        }
+    });
+
     const baseThermostatComponent = component;
-    menuComponent.register(component);
-    runDataManager.register(component);
+    menuComponent.register(baseThermostatComponent);
+    runDataManager.register(baseThermostatComponent);
 });
 
 const createTempControl = function(baseId) {

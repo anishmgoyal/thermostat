@@ -1,0 +1,17 @@
+[Unit]
+Description=Daemon for the thermostat versions service (runs updates)
+After=mosquitto.service
+Requires=network.target
+
+[Service]
+User=pi
+Group=www-data
+WorkingDirectory=/var/lib/thermostat/versions
+ExecStart=/usr/local/bin/gunicorn --workers 5 --bind unix:/var/lib/thermostat/versions/service.sock:8081 main:app
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target

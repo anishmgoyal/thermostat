@@ -12,3 +12,5 @@ const DISPLAY_CELSIUS = 'c';
 const ALL_DISPLAY_UNITS = new Set([DISPLAY_FAHREN, DISPLAY_CELSIUS]);
 
 const MIN_ALLOWED_TEMP_DIFF = 2.2222;
+
+const MAIN_TEMP_SENSOR_ID = 'amg_thermostat_main';

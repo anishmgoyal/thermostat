@@ -1,0 +1,17 @@
+[Unit]
+Description=Daemon for the thermostat control service
+After=mosquitto.service
+Requires=network.target
+
+[Service]
+User=pi
+Group=www-data
+WorkingDirectory=/var/lib/thermostat/control
+ExecStart=/usr/local/bin/python main.python
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target
