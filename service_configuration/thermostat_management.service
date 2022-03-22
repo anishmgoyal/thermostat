@@ -1,0 +1,17 @@
+[Unit]
+Description=Daemon for the thermostat management service
+After=mosquitto.service
+Requires=network.target
+
+[Service]
+User=pi
+Group=www-data
+WorkingDirectory=/var/lib/thermostat/management
+ExecStart=/usr/local/bin/gunicorn --workers 5 --bind unix:/var/lib/thermostat/management/service.sock:8080 main:app
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target

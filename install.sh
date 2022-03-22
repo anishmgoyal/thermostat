@@ -20,7 +20,15 @@ reinit_dir $UPDATE_DIR
 cp download_update.sh $UPDATE_DIR/.
 
 # Install requirements
+sudo apt-get update && sudo apt-get upgrade
+sudo apt-get install -y nginx mosquitto
 python3 -m pip install -r requirements.txt
+
+# Setup nginx
+cp service_configuration/nginx.conf /etc/nginx/.
+mkdir -p /etc/nginx/servers/
+cp service_configuration/default_nginx_site.conf /etc/nginx/servers/.
+sudo /etc/init.d/nginx -s restart
 
 # Copy the controller code
 CONTROL_DIR=$BASE_DIR/control
@@ -38,3 +46,24 @@ MANAGEMENT_SERVICE_DIR=$BASE_DIR/management
 reinit_dir $MANAGEMENT_SERVICE_DIR
 cp -r management_service/* $MANAGEMENT_SERVICE_DIR/.
 cp -r tstatcommon $MANAGEMENT_SERVICE_DIR/.
+
+# Copy the updater service; do not bounce, since we rely on this service for
+# running updates start to finish. This service can be bounced manually if
+# updated.
+VERSIONS_SERVICE_DIR=$BASE_DIR/versions
+reinit_dir $VERSIONS_SERVICE_DIR
+cp -r update_service/* $VERSIONS_SERVICE_DIR
+
+# Install services
+cp service_configuration/thermostat_controller.service /etc/systemd/system/.
+cp service_configuration/thermostat_management.service /etc/systemd/system/.
+cp service_configuration/thermostat_versions.service /etc/systemd/system/.
+
+sudo systemctl enable mosquitto.service --now
+sudo systemctl enable thermostat_versions.service --now
+SERVICES=(thermostat_controller thermostat_management)
+for service in ${SERVICES[@]}
+do
+    sudo systemctl enable $service --now
+    sudo systemctl restart $service
+done
