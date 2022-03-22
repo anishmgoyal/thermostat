@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Thermostat Control</title>
+        <link rel="stylesheet" type="text/css" href="thermostat.css" />
+    </head>
+    <body>
+        <div class="header-bar">
+            <div id="curr-time" class="header-bar-time"></div>
+            <div id="curr-date" class="header-bar-date text-secondary"></div>
+        </div>
+        <div class="main-content">
+            <div id="temp-panel" class="temperature-panel">
+                <div id="main-temp-block"
+                     class="temperature-panel-main has-no-sensors">
+                    <div class="temperature-panel-item-header text-secondary">
+                        Current Temperature
+                    </div>
+                    <div id="main-temp" class="temperature-panel-item-body">
+                    </div>
+                </div>
+            </div>
+            <div class="button-panel">
+                <div id="cooling-control" class="button-panel-item">
+                    <div class="button-panel-item-header">
+                        Cool to
+                    </div>
+                    <div class="button-panel-item-controls">
+                        <button id="cooling-control-minus">-</button>
+                        <span id="cooling-control-value" class="text-cool">
+                            73
+                        </span>
+                        <button id="cooling-control-plus">+</button>
+                    </div>
+                </div>
+                <div id="heating-control" class="button-panel-item">
+                    <div class="button-panel-item-header">
+                        Heat to
+                    </div>
+                    <div class="button-panel-item-controls">
+                        <button id="heating-control-minus">-</button>
+                        <span id="heating-control-value" class="text-heat">
+                            68
+                        </span>
+                        <button id="heating-control-plus">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bar">
+            <button id="system-button" class="footer-bar-button">
+                <div class="footer-bar-button-value">Auto</div>
+                <div class="footer-bar-button-target text-secondary">System</div>
+            </button>
+            <button id="fan-button" class="footer-bar-button">
+                <div class="footer-bar-button-value">Auto</div>
+                <div class="footer-bar-button-target text-secondary">Fan</div>
+            </button>
+            <button id="mode-button" class="footer-bar-button">
+                <div class="footer-bar-button-value">Hold</div>
+                <div class="footer-bar-button-target text-secondary">Mode</div>
+            </button>
+            <button id="menu-button" class="footer-bar-button">
+                <div class="footer-bar-button-target">Menu</div>
+            </button>
+        </div>
+
+        <link rel="stylesheet" type="text/css" href="menu.css" />
+
+        <!-- Framework -->
+        <script type="text/javascript" src="git_info.js"></script>
+        <script type="text/javascript" src="utils.js"></script>
+        <script type="text/javascript" src="constants.js"></script>
+        <script type="text/javascript" src="events.js"></script>
+        <script type="text/javascript" src="versions.js"></script>
+
+        <!-- API -->
+        <script type="text/javascript" src="generic_api_manager.js"></script>
+        <script type="text/javascript" src="config.js"></script>
+        <script type="text/javascript" src="rundata.js"></script>
+        <script type="text/javascript" src="schedule.js"></script>
+
+        <!-- Components -->
+        <script type="text/javascript" src="menu.js"></script>
+        <script type="text/javascript" src="thermostat.js"></script>
+    </body>
+</html>

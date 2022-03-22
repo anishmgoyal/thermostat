@@ -1,0 +1,18 @@
+{
+    "active_mode": 3,
+    "behavior": 0,
+    "fan_enabled": false,
+    "settings": [
+        null,
+        {
+            "target_cool_temp": 21.1111
+        },
+        {
+            "target_heat_temp": 21.1111
+        },
+        {
+            "target_cool_temp": 22.2222,
+            "target_heat_temp": 20
+        }
+    ]
+}
