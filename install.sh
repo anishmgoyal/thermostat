@@ -21,7 +21,7 @@ cp download_update.sh $UPDATE_DIR/.
 
 # Install requirements
 sudo apt-get update && sudo apt-get upgrade
-sudo apt-get install -y nginx mosquitto
+sudo apt-get install -y nginx mosquitto python3 iptables
 python3 -m pip install -r requirements.txt
 
 # Setup nginx
@@ -67,3 +67,7 @@ do
     sudo systemctl enable $service --now
     sudo systemctl restart $service
 done
+
+# Configure iptables
+sudo iptables -A INPUT -p tcp --dport 8001 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+sudo iptables -A OUTPUT -p tcp --sport 8001 -m conntrack --ctstate ESTABLISHED -j ACCEPT
