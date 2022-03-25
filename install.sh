@@ -25,9 +25,9 @@ sudo apt-get install -y nginx mosquitto python3 iptables
 python3 -m pip install -r requirements.txt
 
 # Setup nginx
-cp service_configuration/nginx.conf /etc/nginx/.
+sudo cp service_configuration/nginx.conf /etc/nginx/.
 mkdir -p /etc/nginx/servers/
-cp service_configuration/default_nginx_site.conf /etc/nginx/servers/.
+sudo cp service_configuration/default_nginx_site.conf /etc/nginx/servers/.
 sudo systemctl restart nginx
 
 # Copy the controller code
@@ -61,9 +61,9 @@ reinit_dir $VERSIONS_SERVICE_DIR
 cp -r update_service/* $VERSIONS_SERVICE_DIR
 
 # Install services
-cp service_configuration/thermostat_controller.service /etc/systemd/system/.
-cp service_configuration/thermostat_management.service /etc/systemd/system/.
-cp service_configuration/thermostat_versions.service /etc/systemd/system/.
+sudo cp service_configuration/thermostat_controller.service /etc/systemd/system/.
+sudo cp service_configuration/thermostat_management.service /etc/systemd/system/.
+sudo cp service_configuration/thermostat_versions.service /etc/systemd/system/.
 
 sudo systemctl enable mosquitto.service --now
 sudo systemctl enable thermostat_versions.service --now
