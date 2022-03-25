@@ -47,6 +47,7 @@ if __name__ == '__main__':
                 curr_evaluator = evaluator.OffEvaluator()
 
             curr_evaluator.evaluate(
+                mqtt_client,
                 config,
                 controller,
                 recent_activity,
