@@ -1,4 +1,4 @@
-HASH=$(git show --pretty='format:%H' head | head -1)
+HASH=$(git show --pretty='format:%H' HEAD | head -1)
 UPSTREAM=$(git remote get-url origin)
 DIRNAME=$(basename $UPSTREAM '.git')
 
@@ -21,7 +21,7 @@ cd $DIRNAME
 
 # Check if update needed. If not, clean up and exit
 # the script
-NEW_HASH=\$(git show --pretty='format:%H' head | head -1)
+NEW_HASH=\$(git show --pretty='format:%H' HEAD | head -1)
 if [[ -eq '$HASH' \$NEW_HASH ]]
 then
     do_cleanup
