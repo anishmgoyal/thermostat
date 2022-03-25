@@ -9,7 +9,7 @@ from typing import Any, Dict
 # own names (probably by configuring the thermostat to understand that it is
 # not the hub thermostat, and using randoms). Right now, we don't have an
 # initial configuration step, so we'll avoid attempting this.
-THERMOSTAT_CLIENT_ID = 'amg_thermostat_hub_control'
+THERMOSTAT_CLIENT_ID = 'amgthermostathub_control'
 
 
 class ControlMQTTClient(object):
