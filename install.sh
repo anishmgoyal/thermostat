@@ -47,6 +47,12 @@ reinit_dir $MANAGEMENT_SERVICE_DIR
 cp -r management_service/* $MANAGEMENT_SERVICE_DIR/.
 cp -r tstatcommon $MANAGEMENT_SERVICE_DIR/.
 
+# Copy the user interface
+USER_INTERFACE_DIR=$BASE_DIR/interface
+reinit_dir $USER_INTERFACE_DIR
+cp -r user_interface/* $USER_INTERFACE_DIR/.
+sudo chown -R www-data:www-data $USER_INTERFACE_DIR
+
 # Copy the updater service; do not bounce, since we rely on this service for
 # running updates start to finish. This service can be bounced manually if
 # updated.
