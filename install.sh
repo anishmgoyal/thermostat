@@ -71,18 +71,18 @@ cp -r user_interface/* $USER_INTERFACE_DIR/.
 # running updates start to finish. This service can be bounced manually if
 # updated.
 # We also want to make sure that we don't delete the socket file, if it exists
-#VERSIONS_SERVICE_DIR=$BASE_DIR/versions
-#mkdir -p $VERSIONS_SERVICE_DIR
-#find $VERSIONS_SERVICE_DIR -not -name 'service.sock' -delete
-#cp -r update_service/* $VERSIONS_SERVICE_DIR
+VERSIONS_SERVICE_DIR=$BASE_DIR/versions
+mkdir -p $VERSIONS_SERVICE_DIR
+find $VERSIONS_SERVICE_DIR -not -name 'service.sock' -delete
+cp -r update_service/* $VERSIONS_SERVICE_DIR
 
 # Install services
 sudo cp service_configuration/thermostat_controller.service /etc/systemd/system/.
 sudo cp service_configuration/thermostat_management.service /etc/systemd/system/.
-#sudo cp service_configuration/thermostat_versions.service /etc/systemd/system/.
+sudo cp service_configuration/thermostat_versions.service /etc/systemd/system/.
 
 sudo systemctl enable mosquitto.service --now
-#sudo systemctl enable thermostat_versions.service --now
+sudo systemctl enable thermostat_versions.service --now
 SERVICES=(thermostat_controller thermostat_management)
 for service in ${SERVICES[@]}
 do
