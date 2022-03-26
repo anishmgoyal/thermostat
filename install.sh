@@ -69,8 +69,10 @@ cp -r user_interface/* $USER_INTERFACE_DIR/.
 # Copy the updater service; do not bounce, since we rely on this service for
 # running updates start to finish. This service can be bounced manually if
 # updated.
+# We also want to make sure that we don't delete the socket file, if it exists
 VERSIONS_SERVICE_DIR=$BASE_DIR/versions
-reinit_dir $VERSIONS_SERVICE_DIR
+mkdir -p $VERSIONS_SERVICE_DIR
+find $VERSIONS_SERVICE_DIR -not -name 'service.sock' -delete
 cp -r update_service/* $VERSIONS_SERVICE_DIR
 
 # Install services
