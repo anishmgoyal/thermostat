@@ -50,6 +50,7 @@ BOOT_DIR=$BASE_DIR/boot
 reinit_dir $BOOT_DIR
 cp service_configuration/kiosk.sh $BOOT_DIR/.
 cp service_configuration/autostart /etc/xdg/lxsession/LXDE-pi/.
+cp service_configuration/bash_profile.sh /home/pi/.bash_profile
 
 # Copy the controller code
 CONTROL_DIR=$BASE_DIR/control
