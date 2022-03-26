@@ -9,13 +9,17 @@ function createVersionManager() {
         const content = `
             <div class="versions-update-overlay">
                 <div class="versions-update-message">
-                    Applying update
+                    Applying update. Page will reload automatically.
+                </div>
+                <div class="versions-update-message">
+                    Tap anywhere to dismiss this message.
                 </div>
             </div>
         `;
 
         overlayRef = document.createElement('div');
         overlayRef.innerHTML = content;
+        overlayRef.addEventListener('click', closeOverlay);
         document.body.appendChild(overlayRef);
     }
 
@@ -42,17 +46,22 @@ function createVersionManager() {
                 await fetch(updateUrl, {
                     method: 'POST',
                 });
-                window.location.reload();
             } catch (e) {
                 console.error('Failed to run update.');
                 if (sub != null) {
                     sub.unsubscribe();
                 }
-            } finally {
-                closeOverlay(); // Make sure we close the overlay either way
+                closeOverlay();
             }
         }
     };
 }
 
 const versionManager = createVersionManager();
+sseSubscription.filter('consumer_init').subscribe(consumerInit => {
+    const initVersion = consumerInit['service_version'];
+    if (initVersion != null && initVersion !== BUILD_VER) {
+        // We've detected a change in thermostat version, reload the page
+        window.location.reload();
+    }
+});

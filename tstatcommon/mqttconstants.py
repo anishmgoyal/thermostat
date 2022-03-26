@@ -25,6 +25,7 @@ SENSOR_TYPE_HUMIDITY = "humid"
 # Should not be sent to MQTT. Instead, consumers should get this event as a
 # first event to indicate that the consumer is connected
 EVENT_CONSUMER_INIT = "consumer_init"
+CONSUMER_INIT_VER = "service_version"
 
 # Event that indicates reload of the management service
 EVENT_SERVICE_START = "service_start"

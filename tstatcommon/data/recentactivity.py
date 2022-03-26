@@ -9,7 +9,7 @@ CFG_LAST_HEAT_ENABLE_TIME = 'last_heat_enable_time'
 CFG_LAST_COOL_DISABLE_TIME = 'last_cool_disable_time'
 CFG_LAST_COOL_ENABLE_TIME = 'last_cool_enable_time'
 
-CHANGE_THRESHOLD_TIME_SECONDS = 300
+CHANGE_THRESHOLD_TIME_SECONDS = 120  # 2 minutes
 
 
 class RecentActivity(object):

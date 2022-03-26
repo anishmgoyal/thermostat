@@ -1,3 +1,4 @@
+import build_info
 import queue
 import logging
 import paho.mqtt.client as mqtt
@@ -13,7 +14,8 @@ class ServiceMQTTConsumer(object):
         self.q = queue.Queue()
 
         start_event = {
-            mqttconstants.CFG_EVENT_TYPE: mqttconstants.EVENT_CONSUMER_INIT
+            mqttconstants.CFG_EVENT_TYPE: mqttconstants.EVENT_CONSUMER_INIT,
+            mqttconstants.CONSUMER_INIT_VER: build_info.BUILD_VER
         }
         self.addValue(json.dumps(start_event))
 

@@ -4,9 +4,11 @@ import git_info
 import json
 import logging
 import requests
+import threading
 from flask import Flask
 
 app = Flask(__name__)
+lock = threading.Lock()
 logging.basicConfig(
     filename='record.log',
     level=logging.WARN,
@@ -35,9 +37,11 @@ def checkHead():
 
 @app.route("/update", methods=["POST"])
 def update():
-    try:
+    def run_update():
+        if not lock.acquire(blocking = False):
+            return # There's an update running, don't bother
         os.system('/var/lib/thermostat/updates/download_update.sh')
-    except:
-        app.logger.exception("Failed to download update")
-        return json.dumps({"status": "error"})
-    return json.dumps({"status": "ok"})
+        lock.release()
+    update_thread = threading.Thread(target=run_update)
+    update_thread.start()
+    return json.dumps({"status": "update_triggered"})
