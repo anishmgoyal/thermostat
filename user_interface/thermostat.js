@@ -119,8 +119,12 @@ window.addEventListener('load', () => {
     component.fanButton.updateValue('Auto');
 
     sseSubscription.filter('sensor_reading').subscribe(reading => {
-        if (reading['sensor_type'] !== 'temp') {
-            return; // No support for humidity for now
+        if (reading['sensor_type'] !== 'temp' ||
+            reading['sensor_value'] == null) {
+            // If we don't have a value, skip this iteration. If we have a value
+            // that isn't temp, skip as well, we don't handle humidity / other
+            // potential sensor readings.
+            return;
         }
 
         if (reading['sensor_id'] === MAIN_TEMP_SENSOR_ID) {
