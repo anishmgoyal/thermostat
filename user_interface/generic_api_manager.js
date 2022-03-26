@@ -6,6 +6,9 @@ function createGenericApiManager(configType, subfolder, props = {}) {
             return value;
         },
     );
+    // Reload configuration when re-initializing SSE, because we may have
+    // missed events during connection
+    const initEvents = sseSubscription.filter('consumer_init');
 
     const manager = {
         snapshot: null,
@@ -54,6 +57,7 @@ function createGenericApiManager(configType, subfolder, props = {}) {
     };
 
     updateEvents.subscribe(() => manager.reload());
+    initEvents.subscribe(() => manager.reload());
     manager.reload();
     return manager;
 }

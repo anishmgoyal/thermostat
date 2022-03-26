@@ -101,6 +101,9 @@ function createSSEConnection() {
         const CLOSED = 2;
 
         const sse = new EventSource(url);
+        sse.addEventListener('open', () => {
+            console.log('Established an SSE connection');
+        });
         sse.addEventListener('message', ({data}) => {
             const message = JSON.parse(data);
             baseSubscription.dispatch(message);
