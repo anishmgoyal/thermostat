@@ -103,8 +103,9 @@ function createSSEConnection() {
             baseSubscription.dispatch(message);
         });
         sse.addEventListener('error', () => {
-            console.warn('SSE Error. Retrying in three seconds.');
-            setTimeout(connect, 3000);
+            console.warn('SSE Error. Retrying in one second.');
+            sse.close();
+            setTimeout(connect, 1000);
         });
     }
 
