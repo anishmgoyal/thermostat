@@ -38,10 +38,10 @@ function createVersionManager() {
 
             let sub = null;
             try {
-                const request = fetch(updateUrl, {
+                // Trigger and wait for the update to complete
+                await fetch(updateUrl, {
                     method: 'POST',
                 });
-                await request;
                 window.location.reload();
             } catch (e) {
                 console.error('Failed to run update.');
