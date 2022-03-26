@@ -96,20 +96,11 @@ function createSSEConnection() {
         }
     });
 
-    function connect() {
-        const sse = new EventSource(url);
-        sse.addEventListener('message', ({data}) => {
-            const message = JSON.parse(data);
-            baseSubscription.dispatch(message);
-        });
-        sse.addEventListener('error', () => {
-            console.warn('SSE Error. Retrying in one second.');
-            sse.close();
-            setTimeout(connect, 1000);
-        });
-    }
-
-    connect();
+    const sse = new EventSource(url);
+    sse.addEventListener('message', ({data}) => {
+        const message = JSON.parse(data);
+        baseSubscription.dispatch(message);
+    });
     return baseSubscription;
 }
 
