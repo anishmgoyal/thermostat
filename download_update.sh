@@ -21,7 +21,7 @@ cd thermostat
 # Check if update needed. If not, clean up and exit
 # the script
 NEW_HASH=$(git show --pretty='format:%H' HEAD | head -1)
-if [[ '532f1912689be032409515365d264a6d78f4cd58' == $NEW_HASH ]]
+if [[ '0dcc3dffb25425984f2a35cda026dc467a74d020' == $NEW_HASH ]]
 then
     do_cleanup
     exit 0
@@ -29,7 +29,9 @@ fi
 
 # Install the new version of the thermostat
 ./install.sh
+INSTALL_RESULT=$?
 
 # Clean up and return
 do_cleanup
-exit 0
+exit $INSTALL_RESULT
+
