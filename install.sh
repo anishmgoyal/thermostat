@@ -4,13 +4,13 @@ BASE_DIR=/var/lib/thermostat
 STAGING_DIR=/staging
 IAM=$(whoami)
 
-if [[ -n $BASE_DIR ]]
+if [[ ! -f $BASE_DIR ]]
 then
     sudo mkdir $BASE_DIR
     sudo chown -R $IAM:$IAM $BASE_DIR
 fi
 
-if [[ -n $STAGING_DIR ]]
+if [[ ! -f $STAGING_DIR ]]
 then
     sudo mkdir $STAGING_DIR
     sudo chown -R $IAM:$IAM $STAGING_DIR
