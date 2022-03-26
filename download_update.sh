@@ -1,8 +1,9 @@
+#!/bin/bash
 ## GENERATED FILE, DO NOT MODIFY
 
 # Utility methods
 function do_cleanup() {
-    if [[ -f /staging/thermostat ]]
+    if [[ -d /staging/thermostat ]]
     then
         rm -rf /staging/thermostat
     fi
@@ -20,7 +21,7 @@ cd thermostat
 # Check if update needed. If not, clean up and exit
 # the script
 NEW_HASH=$(git show --pretty='format:%H' HEAD | head -1)
-if [[ '10bfeac2d120b1b6e4fe7182fe5826005128f019' == $NEW_HASH ]]
+if [[ 'b0a11ccd9ce4da93d1801f50916138a6afa286bb' == $NEW_HASH ]]
 then
     do_cleanup
     exit 0
