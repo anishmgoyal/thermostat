@@ -45,6 +45,12 @@ mkdir -p /etc/nginx/servers/
 sudo cp service_configuration/default_nginx_site.conf /etc/nginx/servers/.
 sudo systemctl restart nginx
 
+# Copy startup scripts
+BOOT_DIR=$BASE_DIR/boot
+reinit_dir $BOOT_DIR
+cp service_configuration/kiosk.sh $BOOT_DIR/.
+cp service_configuration/autostart /etc/xdg/lxsession/LXDE-pi/.
+
 # Copy the controller code
 CONTROL_DIR=$BASE_DIR/control
 reinit_dir $CONTROL_DIR

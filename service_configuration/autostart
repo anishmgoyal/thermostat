@@ -1,0 +1,10 @@
+@lxpanel --profile LXDE-pi
+@pcmanfm --desktop --profile LXDE-pi
+
+@xset s 0 0
+@xset s off
+@xset s noblank
+@xset s noexpose
+@xset dpms 0 0
+
+@/var/lib/thermostat/boot/kiosk.sh
