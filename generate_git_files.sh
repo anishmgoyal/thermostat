@@ -3,11 +3,12 @@ UPSTREAM=$(git remote get-url origin)
 DIRNAME=$(basename $UPSTREAM '.git')
 
 cat > download_update.sh << EOF
+#!/bin/bash
 ## GENERATED FILE, DO NOT MODIFY
 
 # Utility methods
 function do_cleanup() {
-    if [[ -f /staging/$DIRNAME ]]
+    if [[ -d /staging/$DIRNAME ]]
     then
         rm -rf /staging/$DIRNAME
     fi
