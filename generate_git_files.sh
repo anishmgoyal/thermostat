@@ -21,7 +21,6 @@ mkdir -p /staging
 cd /staging
 git clone $UPSTREAM
 cd $DIRNAME
-git pull
 
 # Check if update needed. If not, clean up and exit
 # the script
