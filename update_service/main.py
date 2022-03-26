@@ -29,5 +29,9 @@ def checkHead():
 
 @app.route("/update", methods=["POST"])
 def update():
-    os.system('/var/lib/thermostat/updates/download_update.sh')
+    try:
+        os.system('/var/lib/thermostat/updates/download_update.sh')
+    except:
+        app.logger.exception("Failed to download update")
+        return json.dumps({"status": "error"})
     return json.dumps({"status": "ok"})
