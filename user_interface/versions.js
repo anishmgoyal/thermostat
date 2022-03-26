@@ -1,6 +1,31 @@
 function createVersionManager() {
     const currVersionUrl = `${systemRoot}/head`;
     const updateUrl = `${systemRoot}/update`;
+
+    let overlayRef = null;
+    function createOverlay() {
+        closeOverlay(); // Make sure there isn't already an overlay
+
+        const content = `
+            <div class="versions-update-overlay">
+                <div class="versions-update-message">
+                    Applying update
+                </div>
+            </div>
+        `;
+
+        overlayRef = document.createElement('div');
+        overlayRef.innerHTML = content;
+        document.body.appendChild(overlayRef);
+    }
+
+    function closeOverlay() {
+        if (overlayRef != null) {
+            overlayRef.remove();
+            overlayRef = null;
+        }
+    }
+
     return {
         async getCurrentHeadVersion() {
             const response = await fetch(currVersionUrl);
@@ -8,28 +33,23 @@ function createVersionManager() {
             return body['current_head'];
         },
         async runUpdate() {
-            // TODO: Add an overlay to prevent user interaction during an
-            // update
+            menuComponent.close();
+            createOverlay();
 
             let sub = null;
             try {
                 const request = fetch(updateUrl, {
                     method: 'POST',
                 });
-
-                sub = sseSubscription.filter('consumer_init').subscribe(
-                    () => {
-                        window.location.reload();
-                        sub.unsubscribe();
-                    });
-
                 await request;
+                window.location.reload();
             } catch (e) {
                 console.error('Failed to run update.');
                 if (sub != null) {
                     sub.unsubscribe();
                 }
-                return;
+            } finally {
+                closeOverlay(); // Make sure we close the overlay either way
             }
         }
     };
