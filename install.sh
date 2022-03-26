@@ -81,7 +81,7 @@ sudo cp service_configuration/thermostat_management.service /etc/systemd/system/
 sudo cp service_configuration/thermostat_versions.service /etc/systemd/system/.
 
 sudo systemctl enable mosquitto.service --now
-sudo systemctl enable thermostat_versions.service --now
+#sudo systemctl enable thermostat_versions.service --now
 SERVICES=(thermostat_controller thermostat_management)
 for service in ${SERVICES[@]}
 do
