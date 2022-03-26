@@ -46,16 +46,7 @@ chmod +x download_update.sh
 cat > management_service/build_info.py << EOF
 ## GENERATED FILE, DO NOT MODIFY
 
-import json
-from main import app
-
 BUILD_VER = '$HASH'
-
-@app.route('/build_info')
-def buildInfo():
-    return json.dumps({
-        "ver": BUILD_VER
-    })
 
 EOF
 
