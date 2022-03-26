@@ -1,4 +1,5 @@
 #!/bin/bash
+
 CURRENT_DIR=$(dirname $0)
 BASE_DIR=/var/lib/thermostat
 STAGING_DIR=/staging
@@ -90,10 +91,10 @@ do
 done
 
 # Configure iptables
-function add_iptable_rule()
+function add_iptable_rule() {
     local rule=$1
     sudo iptables -C $rule || sudo iptables -A $rule
-fi
+}
 
 add_iptable_rule "INPUT -p tcp -s 192.168.1.0/24 -j ACCEPT"
 add_iptable_rule "INPUT -p tcp -s 192.168.4.0/24 -j ACCEPT"
