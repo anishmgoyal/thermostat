@@ -10,6 +10,7 @@ function createMenuComponent() {
                 <button id="menu-update" disabled="disabled">
                     No Update Available
                 </button>
+                <button id="menu-refresh">Refresh</button>
                 <button id="menu-cancel">Cancel</button>
             </div>
         </div>
@@ -18,6 +19,11 @@ function createMenuComponent() {
     function setupMenuCancelButton(menuComponent) {
         const button = document.getElementById('menu-cancel');
         button.addEventListener('click', () => menuComponent.close());
+    }
+
+    function setupRefreshButton(menuComponent) {
+        const button = document.getElementById('menu-refresh');
+        button.addEventListener('click', () => window.location.reload());
     }
 
     function setupUpdateButton(menuComponent) {
@@ -75,6 +81,7 @@ function createMenuComponent() {
                 document.getElementById('menu-update');
 
             setupMenuCancelButton(this);
+            setupRefreshButton(this);
             setupOverlay(this);
             setupUpdateButton(this);
             checkForUpdates(this);
