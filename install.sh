@@ -4,13 +4,13 @@ BASE_DIR=/var/lib/thermostat
 STAGING_DIR=/staging
 IAM=$(whoami)
 
-if [[ ! -f $BASE_DIR ]]
+if [[ ! -d $BASE_DIR ]]
 then
     sudo mkdir $BASE_DIR
     sudo chown -R $IAM:$IAM $BASE_DIR
 fi
 
-if [[ ! -f $STAGING_DIR ]]
+if [[ ! -d $STAGING_DIR ]]
 then
     sudo mkdir $STAGING_DIR
     sudo chown -R $IAM:$IAM $STAGING_DIR
@@ -18,7 +18,7 @@ fi
 
 function reinit_dir() {
     local dirname=$1
-    if [[ -f $dirname ]]
+    if [[ -d $dirname ]]
     then
         rm -rf $dirname
     fi
