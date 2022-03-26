@@ -1,6 +1,6 @@
 from tstatcommon.constants import LOCAL_DEV_MODE
 
-MQTT_HOSTNAME = 'localhost' if LOCAL_DEV_MODE else 'amgthermostathub'
+MQTT_HOSTNAME = 'localhost' if LOCAL_DEV_MODE else 'amgthermostathub.local'
 MQTT_TOPIC = '/house/amg_thermostat/events'
 
 # Common event configs

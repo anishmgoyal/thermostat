@@ -58,10 +58,13 @@ reinit_dir $CONTROL_DIR
 cp -r thermostat_controller/* $CONTROL_DIR/.
 cp -r tstatcommon $CONTROL_DIR/.
 
-# Copy default configuration. For now, overwrite whatever is there
+# Copy default configuration, if it doesn't exist
 DATA_DIR=$BASE_DIR/data
-reinit_dir $DATA_DIR
-cp -r default_config/* $DATA_DIR/.
+if [[ ! -d $DATA_DIR ]]
+then
+    mkdir -p $DATA_DIR
+    cp -r default_config/* $DATA_DIR/.
+fi
 
 # Copy the management service
 MANAGEMENT_SERVICE_DIR=$BASE_DIR/management
