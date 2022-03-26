@@ -187,3 +187,10 @@ createFooterBarButton = function(id) {
         },
     }
 }
+
+// Add a cursor override for development
+window.addEventListener('keypress', ev => {
+    if (ev.key === 'c') {
+        document.body.style.cursor = 'auto';
+    }
+});
