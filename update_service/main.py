@@ -29,5 +29,5 @@ def checkHead():
 
 @app.route("/update", methods=["POST"])
 def update():
-    os.system('/var/lib/thermostat/updates/download_update.sh')
+    os.system('/bin/bash /var/lib/thermostat/updates/download_update.sh')
     pass
