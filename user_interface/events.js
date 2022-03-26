@@ -96,11 +96,25 @@ function createSSEConnection() {
         }
     });
 
-    const sse = new EventSource(url);
-    sse.addEventListener('message', ({data}) => {
-        const message = JSON.parse(data);
-        baseSubscription.dispatch(message);
-    });
+    function connect() {
+        // Ready state for event source. 0 = connecting, 1 = connected
+        const CLOSED = 2;
+
+        const sse = new EventSource(url);
+        sse.addEventListener('message', ({data}) => {
+            const message = JSON.parse(data);
+            baseSubscription.dispatch(message);
+        });
+        sse.addEventListener('error', () => {
+            if (sse.readyState === CLOSED) {
+                sse.close();
+                console.warn('Retrying SSE connection in one second');
+                setTimeout(connect, 1000);
+            }
+        });
+    }
+
+    connect();
     return baseSubscription;
 }
 
