@@ -1,4 +1,4 @@
 {
     "display_units": "f",
-    "thermostat_epsilon": 0.5
+    "thermostat_epsilon": 0.8
 }
