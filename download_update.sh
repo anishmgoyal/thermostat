@@ -21,7 +21,7 @@ cd thermostat
 # Check if update needed. If not, clean up and exit
 # the script
 NEW_HASH=$(git show --pretty='format:%H' HEAD | head -1)
-if [[ '2209770d8347e622a592b55401563726915f210e' == $NEW_HASH ]]
+if [[ '4ffef8c358742a3d01eaba9b07d50679eba8a816' == $NEW_HASH ]]
 then
     do_cleanup
     exit 0
