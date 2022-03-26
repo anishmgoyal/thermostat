@@ -1,6 +1,20 @@
 #!/bin/bash
 CURRENT_DIR=$(dirname $0)
 BASE_DIR=/var/lib/thermostat
+STAGING_DIR=/staging
+IAM=$(whoami)
+
+if [[ -n $BASE_DIR ]]
+then
+    sudo mkdir $BASE_DIR
+    sudo chown -R $IAM:$IAM $BASE_DIR
+fi
+
+if [[ -n $STAGING_DIR ]]
+then
+    sudo mkdir $STAGING_DIR
+    sudo chown -R $IAM:$IAM $STAGING_DIR
+fi
 
 function reinit_dir() {
     local dirname=$1
@@ -51,7 +65,6 @@ cp -r tstatcommon $MANAGEMENT_SERVICE_DIR/.
 USER_INTERFACE_DIR=$BASE_DIR/interface
 reinit_dir $USER_INTERFACE_DIR
 cp -r user_interface/* $USER_INTERFACE_DIR/.
-sudo chown -R www-data:www-data $USER_INTERFACE_DIR
 
 # Copy the updater service; do not bounce, since we rely on this service for
 # running updates start to finish. This service can be bounced manually if
