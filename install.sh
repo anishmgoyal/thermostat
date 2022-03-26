@@ -43,7 +43,7 @@ python3 -m pip install -r requirements.txt
 sudo cp service_configuration/nginx.conf /etc/nginx/.
 mkdir -p /etc/nginx/servers/
 sudo cp service_configuration/default_nginx_site.conf /etc/nginx/servers/.
-sudo systemctl restart nginx
+# sudo systemctl restart nginx
 
 # Copy the controller code
 CONTROL_DIR=$BASE_DIR/control
