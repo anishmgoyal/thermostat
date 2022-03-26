@@ -29,9 +29,6 @@ fi
 
 # Install the new version of the thermostat
 ./install.sh
-INSTALL_RESULT=$?
 
 # Clean up and return
 do_cleanup
-exit $INSTALL_RESULT
-
