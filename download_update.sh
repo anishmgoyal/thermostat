@@ -8,6 +8,9 @@ function do_cleanup() {
     fi
 }
 
+# Start with cleanup
+do_cleanup
+
 # Clone the repository
 mkdir -p /staging
 cd /staging
@@ -16,16 +19,12 @@ cd thermostat
 
 # Check if update needed. If not, clean up and exit
 # the script
-NEW_HASH=$(git show --pretty='format:%H' head | head -1)
-if [[ -eq 'ab8763c67dd450c43f01b4b9bf2f58fabf0005f6' $NEW_HASH ]]
+NEW_HASH=$(git show --pretty='format:%H' HEAD | head -1)
+if [[ '11606050f5aa02cf205c1260731ed018903e0c9f' == $NEW_HASH ]]
 then
     do_cleanup
     exit 0
 fi
-
-# TODO: Add logic for stopping the current services
-# systemctl stop therm-controller
-# systemctl stop therm-management-service
 
 # Install the new version of the thermostat
 ./install.sh
