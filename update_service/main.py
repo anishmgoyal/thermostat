@@ -2,10 +2,16 @@ import os
 import re
 import git_info
 import json
+import logging
 import requests
 from flask import Flask
 
 app = Flask(__name__)
+logging.basicConfig(
+    filename='record.log',
+    level=logging.WARN,
+    format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+
 
 def getGitOrgAndRepo():
     git_origin_pattern = r"(:|/)([^/:]*)/([^:/]*?)(\.git)?$"

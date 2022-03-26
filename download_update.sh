@@ -32,3 +32,4 @@ fi
 
 # Clean up and return
 do_cleanup
+exit 0
