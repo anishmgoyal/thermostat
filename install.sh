@@ -90,5 +90,12 @@ do
 done
 
 # Configure iptables
-sudo iptables -A INPUT -p tcp --dport 8001 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-sudo iptables -A OUTPUT -p tcp --sport 8001 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+function add_iptable_rule()
+    local rule=$1
+    sudo iptables -C $rule || sudo iptables -A $rule
+fi
+
+add_iptable_rule "INPUT -p tcp -s 192.168.1.0/24 -j ACCEPT"
+add_iptable_rule "INPUT -p tcp -s 192.168.4.0/24 -j ACCEPT"
+add_iptable_rule "INPUT -p tcp -s 127.0.0.0/8 -j ACCEPT"
+add_iptable_rule "INPUT -p tcp -j REJECT"
