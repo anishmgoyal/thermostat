@@ -12,7 +12,7 @@ def config():
     if request.method == "GET":
         logging.info('Fetching config file')
         with open(data.filenames.CONFIG_FILE, "r") as config:
-            return Response(config.read(), mimetype="text/json")
+            return Response(config.read(), mimetype="application/json")
     else:
         new_config = request.get_json()
         swap_file = data.filenames.getSwapFile(data.filenames.CONFIG_FILE)

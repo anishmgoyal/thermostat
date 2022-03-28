@@ -10,7 +10,7 @@ import util_validators
 def schedule():
     if request.method == "GET":
         with open(data.filenames.SCHEDULE_FILE, "r") as schedule:
-            return Response(schedule.read(), mimetype="text/json")
+            return Response(schedule.read(), mimetype="application/json")
     else:
         new_schedule = request.get_json()
         swap_file = data.filenames.getSwapFile(data.filenames.SCHEDULE_FILE)

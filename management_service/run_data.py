@@ -11,7 +11,7 @@ import tstatcommon
 def runData():
     if request.method == "GET":
         with open(data.filenames.RUNDATA_FILE, "r") as run_data:
-            return Response(run_data.read(), mimetype="text/json")
+            return Response(run_data.read(), mimetype="application/json")
     else:
         new_run_data = request.get_json()
         swap_file = data.filenames.getSwapFile(data.filenames.RUNDATA_FILE)
