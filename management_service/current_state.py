@@ -5,12 +5,15 @@ from main import app
 from tstatcommon import circuit
 
 CONTROL_PIN = digitalio.DigitalInOut(circuit.CONTROL_PIN)
+CONTROL_PIN.switch_to_input()
 POWER_PIN = digitalio.DigitalInOut(circuit.POWER_PIN)
+POWER_PIN.switch_to_input()
 FAN_PIN = digitalio.DigitalInOut(circuit.FAN_PIN)
+FAN_PIN.switch_to_input()
 
 @app.route("/current_state", methods=["GET"])
 def current_state():
-    if POWER_PIN.value != circuit.POWER_TEMP:
+    if POWER_PIN.value == circuit.POWER_FAN:
         mode = 'off'
     elif CONTROL_PIN.value == circuit.CONTROL_COOL:
         mode = 'cool'
