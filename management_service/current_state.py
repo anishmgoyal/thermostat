@@ -1,4 +1,4 @@
-import board
+import digitalio
 import json
 import RPi.GPIO as gpio
 from flask import Response
@@ -6,7 +6,7 @@ from main import app
 from tstatcommon import circuit
 
 # Convert truthy/falsy pin values to booleans
-def pin_value(pin: board.Pin):
+def pin_value(pin: digitalio.Pin):
     if gpio.input(pin.id):
         return True
     return False
