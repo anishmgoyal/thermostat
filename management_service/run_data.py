@@ -4,7 +4,10 @@ from tstatcommon import constants, data, mqttconstants
 import json
 import os
 import settings
+import threading
 import tstatcommon
+
+_LOCK = threading.RLock()
 
 
 @app.route("/run_data", methods=["GET", "POST"])
@@ -16,12 +19,13 @@ def runData():
         new_run_data = request.get_json()
         swap_file = data.filenames.getSwapFile(data.filenames.RUNDATA_FILE)
         if validateRunData(new_run_data):
-            # write to the swap file to prevent data corruption mid-write
-            with open(swap_file, "w") as run_data:
-                run_data.write(json.dumps(new_run_data, indent = 4))
-            # now that we've written the file fully, update the inodes on the
-            # file system
-            os.replace(swap_file, data.filenames.RUNDATA_FILE)
+            with _LOCK:
+                # write to the swap file to prevent data corruption mid-write
+                with open(swap_file, "w") as run_data:
+                    run_data.write(json.dumps(new_run_data, indent = 4))
+                # now that we've written the file fully, update the inodes on
+                # the file system
+                os.replace(swap_file, data.filenames.RUNDATA_FILE)
 
             mqtt_client.publishUpdateConfig(mqttconstants.CONFIG_TYPE_RUNDATA)
             return ''
