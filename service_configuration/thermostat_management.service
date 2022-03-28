@@ -1,6 +1,6 @@
 [Unit]
 Description=Daemon for the thermostat management service
-After=mosquitto.service
+After=thermostat_controller.service
 Requires=network.target
 
 [Service]
