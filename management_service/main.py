@@ -10,6 +10,7 @@ logging.basicConfig(
 mqtt_client = util_mqtt.ServiceMQTTClient()
 
 import config
+import current_state
 import events
 import run_data
 import schedule
