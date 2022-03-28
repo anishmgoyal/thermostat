@@ -25,9 +25,11 @@ class HVACController(object):
                  recent_activity: data.RecentActivity):
         self.mqtt_client = mqtt_client
         self.recent_activity = recent_activity
+        self.stored_state = data.State()
         self.control_pin = _loadPin(circuit.CONTROL_PIN)
         self.power_pin = _loadPin(circuit.POWER_PIN)
         self.fan_pin = _loadPin(circuit.FAN_PIN)
+        self.sendStateChangeEvent()
 
     @property
     def is_heat_on(self) -> bool:
@@ -58,6 +60,14 @@ class HVACController(object):
         else:
             fan = mqttconstants.STATE_CHANGE_FAN_AUTO
 
+        # take these vars and store them on disk first
+        new_stored_state = {
+            mqttconstants.CFG_STATE_CHANGE_MODE: mode,
+            mqttconstants.CFG_STATE_CHANGE_FAN: fan
+        }
+        self.stored_state.setState(new_stored_state)
+
+        # construct the mqtt event and send
         base_ev = {
             mqttconstants.CFG_EVENT_TYPE: mqttconstants.EVENT_STATE_CHANGE,
             mqttconstants.CFG_STATE_CHANGE_HOSTNAME: socket.gethostname(),
