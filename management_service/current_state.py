@@ -1,26 +1,26 @@
-import digitalio
+import board
 import json
+import RPi.GPIO as gpio
 from flask import Response
 from main import app
 from tstatcommon import circuit
 
-CONTROL_PIN = digitalio.DigitalInOut(circuit.CONTROL_PIN)
-CONTROL_PIN.switch_to_input()
-POWER_PIN = digitalio.DigitalInOut(circuit.POWER_PIN)
-POWER_PIN.switch_to_input()
-FAN_PIN = digitalio.DigitalInOut(circuit.FAN_PIN)
-FAN_PIN.switch_to_input()
+# Convert truthy/falsy pin values to booleans
+def pin_value(pin: board.Pin):
+    if gpio.input(pin.id):
+        return True
+    return False
 
 @app.route("/current_state", methods=["GET"])
 def current_state():
-    if POWER_PIN.value == circuit.POWER_FAN:
+    if pin_value(circuit.POWER_PIN) == circuit.POWER_FAN:
         mode = 'off'
-    elif CONTROL_PIN.value == circuit.CONTROL_COOL:
+    elif pin_value(circuit.CONTROL_PIN) == circuit.CONTROL_COOL:
         mode = 'cool'
     else:
         mode = 'heat'
 
-    fan_enabled = FAN_PIN.value == circuit.FAN_ON
+    fan_enabled = pin_value(circuit.FAN_PIN) == circuit.FAN_ON
 
     payload = {
         "mode": mode,
