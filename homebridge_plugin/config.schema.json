@@ -1,0 +1,34 @@
+{
+  "pluginAlias": "AnishmgoyalThermostatHomebridgePlugin",
+  "pluginType": "platform",
+  "singular": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "type": "string",
+        "required": true,
+        "default": "AMG Thermostat Homebridge Platform"
+      },
+      "thermostats": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "displayName": {
+              "type": "string",
+              "default": "Thermostat",
+              "required": true
+            },
+            "hostname": {
+              "type": "string",
+              "default": "amgthermostathub",
+              "required": true
+            }
+          }
+        }
+      }
+    }
+  }
+}
