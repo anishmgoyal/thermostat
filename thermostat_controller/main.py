@@ -24,11 +24,10 @@ if __name__ == '__main__':
     run_data = data.RunData()
     schedule = data.Schedule()
 
-    controller = circuit.HVACController(recent_activity)
-    sensor = circuit.TemperatureSensor()
-
     mqtt_client = controlmqtt.ControlMQTTClient(config, run_data, schedule)
     with mqtt_client:
+        controller = circuit.HVACController(mqtt_client, recent_activity)
+        sensor = circuit.TemperatureSensor()
         while True:
             mode = run_data.getActiveMode()
             logging.debug("Active mode: {}".format(mode))

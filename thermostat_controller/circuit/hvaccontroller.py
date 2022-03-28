@@ -1,33 +1,12 @@
-import board
+import controlmqtt
 import digitalio
 import logging
+import socket
 import time
+import tstatcommon.circuit as circuit
 import tstatcommon.data as data
+import tstatcommon.mqttconstants as mqttconstants
 import RPi.GPIO as gpio
-
-HEAT_PIN = board.D21
-COOL_PIN = board.D20
-FAN_PIN = board.D26
-
-CONTROL_PIN = board.D21  # Switches between hot/cold
-POWER_PIN = board.D20   # Switches power from temp / fan
-FAN_PIN = board.D26     # Enables the fan, if the fan circuit is on
-
-# Values fo the power pin, specifying what circuit should be
-# enabled
-POWER_TEMP = True
-POWER_FAN = False
-
-# Values for the control pin, specifying if the system should
-# heat or cool
-CONTROL_HEAT = False
-CONTROL_COOL = True
-
-# Values for the fan pin, specifying if the fan should be
-# forced to ON, or AUTO
-FAN_AUTO = False
-FAN_ON = True
-
 
 def _loadPin(pin: digitalio.Pin) -> digitalio.DigitalInOut:
     # Before initializing digitalio, check
@@ -41,27 +20,51 @@ def _loadPin(pin: digitalio.Pin) -> digitalio.DigitalInOut:
 
 
 class HVACController(object):
-    def __init__(self, recent_activity: data.RecentActivity):
+    def __init__(self,
+                 mqtt_client: controlmqtt.ControlMQTTClient,
+                 recent_activity: data.RecentActivity):
+        self.mqtt_client = mqtt_client
         self.recent_activity = recent_activity
-        self.control_pin = _loadPin(CONTROL_PIN)
-        self.power_pin = _loadPin(POWER_PIN)
-        self.fan_pin = _loadPin(FAN_PIN)
+        self.control_pin = _loadPin(circuit.CONTROL_PIN)
+        self.power_pin = _loadPin(circuit.POWER_PIN)
+        self.fan_pin = _loadPin(circuit.FAN_PIN)
 
     @property
     def is_heat_on(self) -> bool:
-        return self.control_pin.value == CONTROL_HEAT and \
-            self.power_pin.value == POWER_TEMP
+        return self.control_pin.value == circuit.CONTROL_HEAT and \
+            self.power_pin.value == circuit.POWER_TEMP
 
     @property
     def is_cool_on(self) -> bool:
-        return self.control_pin.value == CONTROL_COOL and \
-            self.power_pin.value == POWER_TEMP
+        return self.control_pin.value == circuit.CONTROL_COOL and \
+            self.power_pin.value == circuit.POWER_TEMP
 
     @property
     def is_fan_on(self) -> bool:
         # This property works differently than the other
         # properties. We care more about the
         return self.fan_pin.value
+
+    def sendStateChangeEvent(self):
+        if self.is_heat_on:
+            mode = mqttconstants.STATE_CHANGE_MODE_HEATING
+        elif self.is_cool_on:
+            mode = mqttconstants.STATE_CHANGE_MODE_COOLING
+        else:
+            mode = mqttconstants.STATE_CHANGE_MODE_OFF
+
+        if self.is_fan_on:
+            fan = mqttconstants.STATE_CHANGE_FAN_ON
+        else:
+            fan = mqttconstants.STATE_CHANGE_FAN_AUTO
+
+        base_ev = {
+            mqttconstants.CFG_EVENT_TYPE: mqttconstants.EVENT_STATE_CHANGE,
+            mqttconstants.CFG_STATE_CHANGE_HOSTNAME: socket.gethostname(),
+            mqttconstants.CFG_STATE_CHANGE_MODE: mode,
+            mqttconstants.CFG_STATE_CHANGE_FAN: fan
+        }
+        self.mqtt_client.sendEvent(base_ev)
 
     def enableHeat(self):
         # Safety measure - do not switch directly from
@@ -75,8 +78,9 @@ class HVACController(object):
         # a heat toggle now
         if self.recent_activity.canToggle():
             self.recent_activity.setLastHeatEnableTime(time.time())
-            self.control_pin.value = CONTROL_HEAT
-            self.power_pin.value = POWER_TEMP
+            self.control_pin.value = circuit.CONTROL_HEAT
+            self.power_pin.value = circuit.POWER_TEMP
+            self.sendStateChangeEvent()
         else:
             logging.warning("Cannot enable heat right now")
 
@@ -92,8 +96,9 @@ class HVACController(object):
         # a cooling toggle now
         if self.recent_activity.canToggle():
             self.recent_activity.setLastCoolEnableTime(time.time())
-            self.control_pin.value = CONTROL_COOL
-            self.power_pin.value = POWER_TEMP
+            self.control_pin.value = circuit.CONTROL_COOL
+            self.power_pin.value = circuit.POWER_TEMP
+            self.sendStateChangeEvent()
         else:
             logging.warning("Cannot enable cooling right now")
 
@@ -103,7 +108,8 @@ class HVACController(object):
         if self.is_cool_on:
             if self.recent_activity.canToggle():
                 self.recent_activity.setLastCoolDisableTime(time.time())
-                self.power_pin.value = POWER_FAN
+                self.power_pin.value = circuit.POWER_FAN
+                self.sendStateChangeEvent()
             else:
                 logging.warning("Cannot disable cooling right now")
         # Safety measure - do not disable heating unless it's been
@@ -111,12 +117,15 @@ class HVACController(object):
         elif self.is_heat_on:
             if self.recent_activity.canToggle():
                 self.recent_activity.setLastHeatDisableTime(time.time())
-                self.power_pin.value = POWER_FAN
+                self.power_pin.value = circuit.POWER_FAN
+                self.sendStateChangeEvent()
             else:
                 logging.warning("Cannot disable cooling right now")
 
     def enableFan(self):
-        self.fan_pin.value = FAN_ON
+        self.fan_pin.value = circuit.FAN_ON
+        self.sendStateChangeEvent()
 
     def disableFan(self):
-        self.fan_pin.value = FAN_AUTO
+        self.fan_pin.value = circuit.FAN_AUTO
+        self.sendStateChangeEvent()

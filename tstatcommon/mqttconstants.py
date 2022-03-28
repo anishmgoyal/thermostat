@@ -13,6 +13,17 @@ CONFIG_TYPE_BASE = "config"
 CONFIG_TYPE_RUNDATA = "rundata"
 CONFIG_TYPE_SCHEDULE = "schedule"
 
+# Values for a state change event
+EVENT_STATE_CHANGE = "state_change"
+CFG_STATE_CHANGE_HOSTNAME = "hostname"
+CFG_STATE_CHANGE_MODE = "mode"
+CFG_STATE_CHANGE_FAN = "fan"
+STATE_CHANGE_MODE_OFF = "off"
+STATE_CHANGE_MODE_HEATING = "heat"
+STATE_CHANGE_MODE_COOLING = "cool"
+STATE_CHANGE_FAN_AUTO = "auto"
+STATE_CHANGE_FAN_ON = "on"
+
 # Values for a sensor reading event
 EVENT_SENSOR_READING = "sensor_reading"
 CFG_SENSOR_ID = "sensor_id"
