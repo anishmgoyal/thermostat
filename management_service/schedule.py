@@ -4,7 +4,11 @@ from tstatcommon import constants, data, mqttconstants
 import json
 import os
 import settings
+import threading
 import util_validators
+
+_LOCK = threading.RLock()
+
 
 @app.route("/schedule", methods = ["GET", "POST"])
 def schedule():
@@ -15,9 +19,10 @@ def schedule():
         new_schedule = request.get_json()
         swap_file = data.filenames.getSwapFile(data.filenames.SCHEDULE_FILE)
         if validateSchedule(new_schedule):
-            with open(swap_file, "w") as schedule:
-                schedule.write(json.dumps(new_schedule, indent = 4))
-            os.replace(swap_file, data.filenames.SCHEDULE_FILE)
+            with _LOCK:
+                with open(swap_file, "w") as schedule:
+                    schedule.write(json.dumps(new_schedule, indent = 4))
+                os.replace(swap_file, data.filenames.SCHEDULE_FILE)
 
             mqtt_client.publishUpdateConfig(mqttconstants.CONFIG_TYPE_SCHEDULE)
             return ''
