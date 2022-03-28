@@ -17,7 +17,7 @@ class State(object):
             return json.load(state)
 
     def setState(self, new_state):
-        swap_file_name = filenames.getSwapFile(self.file_name)
-        with open(swap_file_name, 'w') as swap_file:
-            json.dump(new_state, swap_file, indent=4)
+        swap_file = filenames.getSwapFile(self.file_name)
+        with open(swap_file, 'w') as state:
+            json.dump(new_state, state, indent=4)
         os.replace(swap_file, self.file_name)
