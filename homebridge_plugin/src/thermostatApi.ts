@@ -1,7 +1,8 @@
 import { connect, Client } from 'mqtt';
-import { Observable, Observer, of, ReplaySubject } from 'rxjs';
-import { combineLatestWith, first, map, shareReplay, switchMap } from 'rxjs/operators';
+import { Observable, Observer, of, ReplaySubject, Subject } from 'rxjs';
+import { catchError, combineLatestWith, concatMap, first, map, shareReplay, switchMap } from 'rxjs/operators';
 import { get, IncomingMessage, request } from 'http';
+import { Logger } from 'homebridge';
 import { ThermostatHomebridgePlatform } from './platform';
 
 const MQTT_HUB_HOSTNAME = 'amgthermostathub.local';
@@ -18,6 +19,7 @@ const MIN_THRESHOLD_DIFF = 2.2222; // Degrees celsius, translates to 4F
  */
 export class ThermostatApi {
   static client?: Client;
+  static logger?: Logger;
 
   private readonly baseUrl =
     `http://${this.hostname}.local:${THERMOSTAT_API_PORT}/api`;
@@ -25,6 +27,13 @@ export class ThermostatApi {
   private currentTempC$ = new ReplaySubject<number>(1);
   private circuitState$ = new ReplaySubject<CircuitState>(1);
   private runData$ = new ReplaySubject<RunData>(1);
+
+  // Use an observable to prevent concurrent updates, which can lead to
+  // frustrating results
+  private runDataUpdate$ = new Subject<{
+    observer: Observer<string>;
+    transform: (curr: RunData) => RunData | null;
+  }>();
 
   readonly state$: Observable<ThermostatState> = this.currentTempC$.pipe(
     combineLatestWith(this.circuitState$, this.runData$),
@@ -63,98 +72,115 @@ export class ThermostatApi {
       circuitState => this.circuitState$.next(circuitState));
     this.getRunData().pipe(first()).subscribe(
       runData => this.runData$.next(runData));
+    this.subscribeToRunDataChanges();
   }
 
   setFanState(state: 'on' | 'auto') {
-    return this.getRunData().pipe(
-      first(),
-      switchMap(runData => {
-        runData.fan_enabled = state === 'on';
-        return this.setRunData(runData);
-      }));
+    return new Observable(observer => {
+      this.runDataUpdate$.next({
+        observer,
+        transform: runData => {
+          runData.fan_enabled = state === 'on';
+          return runData;
+        },
+      });
+    });
   }
 
   setTargetHeatingCoolingState(state: 'off' | 'cool' | 'heat' | 'auto') {
-    return this.getRunData().pipe(
-      first(),
-      switchMap(runData => {
-        runData.active_mode = STR_MODE_TO_RUN_DATA[state];
-        return this.setRunData(runData);
-      }));
+    return new Observable(observer => {
+      this.runDataUpdate$.next({
+        observer,
+        transform: runData => {
+          runData.active_mode = STR_MODE_TO_RUN_DATA[state];
+          return runData;
+        },
+      });
+    });
   }
 
   setTargetTemperature(tempC: number) {
-    return this.getRunData().pipe(
-      first(),
-      switchMap(runData => {
-        switch (runData.active_mode) {
-          case ThermostatMode.OFF:
-          case ThermostatMode.AUTO:
-            // Don't do anything here - we can't set a target temp
-            // if we're off, or if we're in auto mode
-            return of('');
-          case ThermostatMode.COOL:
-            runData.settings[ThermostatMode.COOL]
-              .target_cool_temp = tempC;
-            break;
-          case ThermostatMode.HEAT:
-            runData.settings[ThermostatMode.HEAT]
-              .target_heat_temp = tempC;
-            break;
-        }
-        return this.setRunData(runData);
-      }));
+    return new Observable(observer => {
+      this.runDataUpdate$.next({
+        observer,
+        transform: runData => {
+          switch (runData.active_mode) {
+            case ThermostatMode.OFF:
+            case ThermostatMode.AUTO:
+              // Don't do anything here - we can't set a target temp
+              // if we're off, or if we're in auto mode
+              return null;
+            case ThermostatMode.COOL:
+              runData.settings[ThermostatMode.COOL]
+                .target_cool_temp = tempC;
+              break;
+            case ThermostatMode.HEAT:
+              runData.settings[ThermostatMode.HEAT]
+                .target_heat_temp = tempC;
+              break;
+          }
+          return runData;
+        },
+      });
+    });
   }
 
   setCoolingThresholdTemp(tempC: number) {
-    return this.getRunData().pipe(
-      first(),
-      switchMap(runData => {
-        if (runData.active_mode === ThermostatMode.OFF ||
-                    runData.active_mode === ThermostatMode.HEAT) {
-          return of('');
-        }
+    return new Observable(observer => {
+      this.runDataUpdate$.next({
+        observer,
+        transform: runData => {
+          if (runData.active_mode === ThermostatMode.OFF ||
+              runData.active_mode === ThermostatMode.HEAT) {
+            return null;
+          }
 
-        if (runData.active_mode === ThermostatMode.AUTO) {
-          tempC = Math.max(
-            tempC,
-            runData.settings[runData.active_mode].target_heat_temp +
-              MIN_THRESHOLD_DIFF);
-        }
+          if (runData.active_mode === ThermostatMode.AUTO) {
+            tempC = Math.max(
+              tempC,
+              runData.settings[runData.active_mode].target_heat_temp +
+                MIN_THRESHOLD_DIFF);
+          }
 
-        if (tempC === runData.settings[runData.active_mode].target_cool_temp) {
-          return of(''); // no-op
-        }
+          if (tempC ===
+              runData.settings[runData.active_mode].target_cool_temp) {
+            return null; // no-op
+          }
 
-        runData.settings[runData.active_mode].target_cool_temp = tempC;
-        return this.setRunData(runData);
-      }));
+          runData.settings[runData.active_mode].target_cool_temp = tempC;
+          return runData;
+        },
+      });
+    });
   }
 
   setHeatingThresholdTemp(tempC: number) {
-    return this.getRunData().pipe(
-      first(),
-      switchMap(runData => {
-        if (runData.active_mode === ThermostatMode.OFF ||
-                    runData.active_mode === ThermostatMode.COOL) {
-          return of('');
-        }
+    return new Observable(observer => {
+      this.runDataUpdate$.next({
+        observer,
+        transform: runData => {
+          if (runData.active_mode === ThermostatMode.OFF ||
+              runData.active_mode === ThermostatMode.COOL) {
+            return null;
+          }
 
-        if (runData.active_mode === ThermostatMode.AUTO) {
-          tempC = Math.min(
-            tempC,
-            runData.settings[runData.active_mode].target_cool_temp -
-              MIN_THRESHOLD_DIFF);
-        }
+          if (runData.active_mode === ThermostatMode.AUTO) {
+            tempC = Math.min(
+              tempC,
+              runData.settings[runData.active_mode].target_cool_temp -
+                MIN_THRESHOLD_DIFF);
+          }
 
-        if (tempC === runData.settings[runData.active_mode].target_heat_temp) {
-          return of(''); // no-op
-        }
+          if (tempC ===
+              runData.settings[runData.active_mode].target_heat_temp) {
+            return null; // no-op
+          }
 
-        runData.settings[runData.active_mode].target_heat_temp = tempC;
-        return this.setRunData(runData);
-      }),
-    );
+          runData.settings[runData.active_mode].target_heat_temp = tempC;
+          return runData;
+        },
+      });
+    });
   }
 
   private getCircuitState(): Observable<CircuitState> {
@@ -178,7 +204,7 @@ export class ThermostatApi {
                 event.sensor_type === 'temp') {
         this.currentTempC$.next(event.sensor_value);
       }
-    } else if (event.event_type === 'status_change') {
+    } else if (event.event_type === 'state_change') {
       if (event.hostname !== this.hostname) {
         return;
       }
@@ -188,32 +214,51 @@ export class ThermostatApi {
 
   private setRunData(runData: RunData): Observable<string> {
     return ThermostatApi.sendPostRequest(
-      this.platform,
       `${this.baseUrl}/run_data`,
       JSON.stringify(runData),
       'application/json',
     );
   }
 
+  private subscribeToRunDataChanges() {
+    this.runDataUpdate$.pipe(
+      concatMap(({observer, transform}) => {
+        const downstream = this.getRunData().pipe(
+          first(),
+          map(transform),
+          switchMap(runData => {
+            if (runData == null) {
+              return of('');
+            }
+            return this.setRunData(runData);
+          }),
+          shareReplay(1),
+        );
+        downstream.subscribe(observer);
+        return downstream.pipe(catchError(() => of('')));
+      }),
+    ).subscribe();
+  }
+
   private static readHttpMessage(
     observer: Observer<string>,
     res: IncomingMessage,
     method: string,
-    url: string) {
-    if (Math.floor((res.statusCode ?? 0) / 100) !== 2) {
-      const msg = `Failed to make ${method} request to ${url}: ` +
-                `${res.statusCode} ${res.statusMessage}`;
-      observer.error(new Error(msg));
-      res.resume();
-      return;
-    }
-
+    url: string,
+  ) {
     const chunks: string[] = [];
     res.setEncoding('utf8');
     res.on('data', chunk => chunks.push(chunk));
     res.on('end', () => {
-      observer.next(chunks.join());
-      observer.complete();
+      if (Math.floor((res.statusCode ?? 0) / 100) !== 2) {
+        const msg = `Failed to make ${method} request to ${url}: ` +
+                    `${res.statusCode} ${res.statusMessage}; body: \n ` +
+                    `${chunks.join()}`;
+        observer.error(new Error(msg));
+      } else {
+        observer.next(chunks.join());
+        observer.complete();
+      }
     });
   }
 
@@ -228,12 +273,11 @@ export class ThermostatApi {
   }
 
   private static sendPostRequest(
-    platform: ThermostatHomebridgePlatform,
     url: string,
     body: string,
     mimetype?: string,
   ): Observable<string> {
-    platform.log.debug(`Write ${JSON.stringify(body)} to ${url}`);
+    this.logger?.debug(`Write ${JSON.stringify(body)} to ${url}`);
     return new Observable(observer => {
       const req = request(url, {
         method: 'POST',
@@ -280,15 +324,15 @@ export interface ThermostatState {
 // MQTT Events
 
 type ThermostatEvent =
-    ConfigUpdateEvent | StatusChangeEvent | SensorReadingEvent;
+    ConfigUpdateEvent | StateChangeEvent | SensorReadingEvent;
 
 interface ConfigUpdateEvent {
     event_type: 'update_configuration';
     config_type: 'config' | 'rundata' | 'schedule';
 }
 
-interface StatusChangeEvent {
-    event_type: 'status_change';
+interface StateChangeEvent {
+    event_type: 'state_change';
     hostname: string;
     mode: 'off' | 'heat' | 'cool';
     fan: 'on' | 'auto';

@@ -2,6 +2,7 @@ import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, Service, Charact
 
 import { PLATFORM_NAME, PLUGIN_NAME, ThermostatPlatformConfig } from './settings';
 import { ThermostatPlatformAccessory } from './platformAccessory';
+import { ThermostatApi } from './thermostatApi';
 
 /**
  * ThermostatHomebridgePlatform
@@ -21,6 +22,8 @@ export class ThermostatHomebridgePlatform implements DynamicPlatformPlugin {
     config: PlatformConfig,
     public readonly api: API,
   ) {
+    ThermostatApi.logger = this.log;
+
     this.config = config as ThermostatPlatformConfig;
     this.log.debug('Finished initializing platform:', this.config.name);
 

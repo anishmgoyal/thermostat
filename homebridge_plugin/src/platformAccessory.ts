@@ -18,8 +18,8 @@ export class ThermostatPlatformAccessory {
   // Aliases for supported characteristics
   readonly Active =
     this.platform.Characteristic.Active;
-  readonly TargetFanState =
-    this.platform.Characteristic.TargetFanState;
+  readonly CurrentFanState =
+    this.platform.Characteristic.CurrentFanState;
   readonly CurrHeatCool =
     this.platform.Characteristic.CurrentHeatingCoolingState;
   readonly TargetHeatCool =
@@ -48,19 +48,6 @@ export class ThermostatPlatformAccessory {
       .setCharacteristic(this.platform.Characteristic.Model, 'Thermostat')
       .setCharacteristic(this.platform.Characteristic.SerialNumber, this.hostname);
 
-    this.fanService =
-      this.accessory.getService(this.platform.Service.Fanv2) ||
-      this.accessory.addService(this.platform.Service.Fanv2);
-
-    this.fanService.setCharacteristic(this.platform.Characteristic.Name,
-      `${accessory.displayName} Fan`);
-
-    this.fanService.getCharacteristic(this.Active)
-      .setProps({perms: [Perms.EVENTS, Perms.PAIRED_READ]});
-
-    this.fanService.getCharacteristic(this.TargetFanState)
-      .onSet(this.setFanState.bind(this));
-
     this.thermostatService =
       this.accessory.getService(this.platform.Service.Thermostat) ||
       this.accessory.addService(this.platform.Service.Thermostat);
@@ -73,7 +60,7 @@ export class ThermostatPlatformAccessory {
 
     this.thermostatService.getCharacteristic(this.TargetTemp)
       .onSet(this.setTargetTemperature.bind(this))
-      .setProps({minValue: 17, maxValue: 28})
+      .setProps({ minValue: 17, maxValue: 28 })
       .updateValue(17);
 
     this.thermostatService.getCharacteristic(this.TempDisplayUnits)
@@ -81,26 +68,31 @@ export class ThermostatPlatformAccessory {
 
     this.thermostatService.getCharacteristic(this.CoolThresh)
       .onSet(this.setCoolingThresholdTemperature.bind(this))
-      .setProps({minValue: 17, maxValue: 28})
+      .setProps({ minValue: 17, maxValue: 28 })
       .updateValue(17);
 
     this.thermostatService.getCharacteristic(this.HeatThresh)
       .onSet(this.setHeatingThresholdTemperature.bind(this))
-      .setProps({minValue: 17, maxValue: 28})
+      .setProps({ minValue: 17, maxValue: 28 })
       .updateValue(17);
+
+    this.fanService =
+      this.accessory.getService(this.platform.Service.Fanv2) ||
+      this.accessory.addService(this.platform.Service.Fanv2);
+
+    this.fanService.setCharacteristic(this.platform.Characteristic.Name,
+      `${accessory.displayName} Fan`);
+
+    this.fanService.getCharacteristic(this.Active)
+      .onSet(this.setFanState.bind(this));
 
     this.api.state$.subscribe(state => this.updateCharacteristics(state));
   }
 
   async setFanState(value: CharacteristicValue) {
     let fanState: ThermostatState['fanState'] = 'auto';
-    switch (value) {
-      case this.TargetFanState.MANUAL:
-        fanState = 'on';
-        break;
-      case this.TargetFanState.AUTO:
-        fanState = 'auto';
-        break;
+    if (value === this.Active.ACTIVE) {
+      fanState = 'on';
     }
     this.platform.log.debug(`Set fan state: ${fanState}`);
     await firstValueFrom(this.api.setFanState(fanState));
@@ -145,19 +137,19 @@ export class ThermostatPlatformAccessory {
     this.platform.log.debug(
       `Updating characteristics: ${JSON.stringify(thermostatState)}`);
     const currFanActive =
-      thermostatState.fanState === 'on' ||
-      thermostatState.currentHeatingCoolingState !== 'off' ?
+      thermostatState.fanMode === 'on' ?
         this.Active.ACTIVE :
         this.Active.INACTIVE;
     this.fanService.updateCharacteristic(
       this.Active, currFanActive);
 
-    const targetFanState =
-      thermostatState.fanMode === 'on' ?
-        this.TargetFanState.MANUAL :
-        this.TargetFanState.AUTO;
+    const currentFanState =
+      thermostatState.fanState === 'on' ||
+        thermostatState.currentHeatingCoolingState !== 'off' ?
+        this.CurrentFanState.BLOWING_AIR :
+        this.CurrentFanState.IDLE;
     this.fanService.updateCharacteristic(
-      this.TargetFanState, targetFanState);
+      this.CurrentFanState, currentFanState);
 
     const currHeatCool = {
       'off': this.CurrHeatCool.OFF,
