@@ -5,8 +5,7 @@
 sudo bash -c "echo 0 > /sys/class/backlight/rpi_backlight/brightness"
 
 /usr/bin/chromium-browser \
-    --app=http://localhost:8081/thermostat.html \
-    --kiosk \
+    --kiosk http://localhost:8001/thermostat.html \
     --noerrdialogs \
     --disable-session-crashed-bubble \
     --disable-infobars \

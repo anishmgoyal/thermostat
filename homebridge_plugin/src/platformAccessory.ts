@@ -24,6 +24,8 @@ export class ThermostatPlatformAccessory {
     this.platform.Characteristic.CurrentHeatingCoolingState;
   readonly TargetHeatCool =
     this.platform.Characteristic.TargetHeatingCoolingState;
+  readonly CurrHumid =
+    this.platform.Characteristic.CurrentRelativeHumidity;
   readonly CurrTemp =
     this.platform.Characteristic.CurrentTemperature;
   readonly TargetTemp =
@@ -136,6 +138,8 @@ export class ThermostatPlatformAccessory {
   private updateCharacteristics(thermostatState: ThermostatState) {
     this.platform.log.debug(
       `Updating characteristics: ${JSON.stringify(thermostatState)}`);
+
+    // Control information
     const currFanActive =
       thermostatState.fanMode === 'on' ?
         this.Active.ACTIVE :
@@ -168,9 +172,14 @@ export class ThermostatPlatformAccessory {
     this.thermostatService.updateCharacteristic(
       this.TargetHeatCool, targetHeatCool);
 
+    // Environment information
+    this.thermostatService.updateCharacteristic(
+      this.CurrHumid, thermostatState.currentHumidity);
+
     this.thermostatService.updateCharacteristic(
       this.CurrTemp, thermostatState.currentTemperature);
 
+    // Target environment information
     if (thermostatState.targetTemperature != null) {
       this.thermostatService.updateCharacteristic(
         this.TargetTemp, thermostatState.targetTemperature);

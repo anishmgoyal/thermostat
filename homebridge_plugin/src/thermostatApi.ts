@@ -25,6 +25,7 @@ export class ThermostatApi {
     `http://${this.hostname}.local:${THERMOSTAT_API_PORT}/api`;
 
   private currentTempC$ = new ReplaySubject<number>(1);
+  private currentHumidity$ = new ReplaySubject<number>(1);
   private circuitState$ = new ReplaySubject<CircuitState>(1);
   private runData$ = new ReplaySubject<RunData>(1);
 
@@ -36,9 +37,10 @@ export class ThermostatApi {
   }>();
 
   readonly state$: Observable<ThermostatState> = this.currentTempC$.pipe(
-    combineLatestWith(this.circuitState$, this.runData$),
-    map(([currentTempC, circuitState, runData]) => ({
-      currentTemperature: currentTempC,
+    combineLatestWith(this.currentHumidity$, this.circuitState$, this.runData$),
+    map(([currentTemperature, currentHumidity, circuitState, runData]) => ({
+      currentTemperature,
+      currentHumidity,
       currentHeatingCoolingState: circuitState.mode,
       fanMode: runData.fan_enabled ? 'on' as const : 'auto' as const,
       fanState: circuitState.fan,
@@ -201,8 +203,11 @@ export class ThermostatApi {
       }
     } else if (event.event_type === 'sensor_reading') {
       if (event.sensor_id === MAIN_SENSOR_ID &&
-                event.sensor_type === 'temp') {
+          event.sensor_type === 'temp') {
         this.currentTempC$.next(event.sensor_value);
+      } else if (event.sensor_id === MAIN_SENSOR_ID &&
+                 event.sensor_type === 'humid') {
+        this.currentHumidity$.next(event.sensor_value);
       }
     } else if (event.event_type === 'state_change') {
       if (event.hostname !== this.hostname) {
@@ -228,8 +233,13 @@ export class ThermostatApi {
           map(transform),
           switchMap(runData => {
             if (runData == null) {
+              // Don't do anything here. This means that the change was a
+              // no-op.
               return of('');
             }
+            // Update homekit with the run data we're setting, as this may
+            // differ from the change the user asked for
+            this.runData$.next(runData);
             return this.setRunData(runData);
           }),
           shareReplay(1),
@@ -316,6 +326,7 @@ export interface ThermostatState {
     fanState: 'on' | 'auto'; // The current fan circuit state
     targetHeatingCoolingState: 'off' | 'cool' | 'heat' | 'auto';
     currentTemperature: number;
+    currentHumidity: number;
     targetTemperature?: number;
     coolingThresholdTemperature?: number;
     heatingThresholdTemperature?: number;
