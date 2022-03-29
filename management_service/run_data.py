@@ -4,10 +4,10 @@ from tstatcommon import constants, data, mqttconstants
 import json
 import os
 import settings
-import multiprocessing
+import threading
 import tstatcommon
 
-_LOCK = multiprocessing.Lock()
+_LOCK = threading.Lock()
 
 
 @app.route("/run_data", methods=["GET", "POST"])
