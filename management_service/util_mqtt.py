@@ -1,10 +1,10 @@
 import build_info
-import queue
-import logging
-import paho.mqtt.client as mqtt
 import json
+import logging
+import multiprocessing
+import paho.mqtt.client as mqtt
+import queue
 import uuid
-from threading import Lock
 from tstatcommon import mqttconstants
 
 
@@ -38,7 +38,7 @@ class ServiceMQTTClient(object):
     def __init__(self):
         self.client = mqtt.Client(str(uuid.uuid4()))
         self.client.connect(mqttconstants.MQTT_HOSTNAME)
-        self.consumer_lock = Lock()
+        self.consumer_lock = multiprocessing.Lock()
         self.consumers: list[ServiceMQTTConsumer] = []
 
         # Create a separate thread that sends messages to any consumers

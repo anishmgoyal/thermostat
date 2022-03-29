@@ -4,10 +4,10 @@ from tstatcommon import constants, data, mqttconstants
 import json
 import os
 import settings
-import threading
+import multiprocessing
 import util_validators
 
-_LOCK = threading.RLock()
+_LOCK = multiprocessing.Lock()
 
 
 @app.route("/schedule", methods = ["GET", "POST"])

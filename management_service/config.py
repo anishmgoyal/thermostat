@@ -4,10 +4,10 @@ from main import app, mqtt_client
 from tstatcommon import constants, data, mqttconstants
 import json
 import os
-import threading
+import multiprocessing
 import util_validators
 
-_LOCK = threading.RLock()
+_LOCK = multiprocessing.Lock()
 
 
 @app.route("/config", methods=["GET", "POST"])
