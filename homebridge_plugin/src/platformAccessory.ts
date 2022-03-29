@@ -1,4 +1,4 @@
-import { Service, PlatformAccessory, CharacteristicValue, Perms } from 'homebridge';
+import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 import { firstValueFrom } from 'rxjs';
 
 import { ThermostatHomebridgePlatform } from './platform';
