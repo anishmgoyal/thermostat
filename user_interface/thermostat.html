@@ -82,13 +82,7 @@
         <link rel="stylesheet" type="text/css" href="versions.css" />
 
         <!-- Version info -->
-        <script type="text/javascript">
-            // Dynamically load the version hash - it is critical that we
-            // prevent caching here
-            var script = document.createElement('script');
-            script.src = `git_info.js?t=${new Date().getTime()}`;
-            document.head.appendChild(script);
-        </script>
+        <script type="text/javascript" src="git_info.js"></script>
 
         <!-- Framework -->
         <script type="text/javascript" src="utils.js"></script>
