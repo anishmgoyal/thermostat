@@ -80,7 +80,7 @@ button {
     background: none;
     border: none;
     border-radius: 999px;
-    font-size: var(--font-size-medium);
+    font-size: var(--font-size-large);
     padding: var(--spacing-base);
     margin-bottom: -1 * var(--spacing-base);
 }
@@ -204,59 +204,6 @@ button {
     margin-top: var(--spacing-base);
 }
 
-.button-panel {
-    border: solid var(--secondary-background);
-    border-width: 0 0 0 3px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    justify-content: center;
-    margin-top: var(--spacing-base);
-    padding: var(--spacing-double) var(--spacing-base) var(--spacing-triple);
-}
-
-.button-panel-item {
-    border-radius: var(--spacing-base);
-    display: flex;
-    flex-direction: column;
-    padding: var(--spacing-one-plus-half) var(--spacing-base);
-}
-
-.button-panel-item-header {
-    font-size: var(--font-size-caption);
-    font-weight: bold;
-    margin-bottom: var(--spacing-half);
-    text-align: center;
-}
-
-.button-panel-item-controls {
-    align-items: center;
-    display: flex;
-}
-
-.button-panel-item-controls button {
-    background: none;
-    border: none;
-    color: var(--secondary-text-dark);
-    flex: 1;
-    font-size: var(--font-size-xlarge);
-    outline: none;
-    width: 30px;
-}
-
-.button-panel-item-controls button:first-of-type {
-    text-align: left;
-}
-
-.button-panel-item-controls button:last-of-type {
-    text-align: right;
-}
-
-.button-panel-item-controls span {
-    font-size: var(--font-size-large);
-    text-align: center;
-}
-
 .footer-panel {
     align-items: center;
     background-color: var(--secondary-background);
@@ -275,12 +222,12 @@ button {
 }
 
 .footer-panel-item-controls {
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-xlarge);
 }
 
 .footer-panel-item-controls button {
     background: none;
     border: none;
     color: var(--secondary-text-dark);
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-xlarge);
 }
