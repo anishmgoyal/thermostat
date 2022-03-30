@@ -58,6 +58,11 @@ reinit_dir $CONTROL_DIR
 cp -r thermostat_controller/* $CONTROL_DIR/.
 cp -r tstatcommon $CONTROL_DIR/.
 
+# Copy vendor assets
+VENDOR_DIR=$BASE_DIR/vendor
+reinit_dir $VENDOR_DIR
+cp -r vendor/* $VENDOR_DIR/.
+
 # Copy default configuration, if it doesn't exist
 DATA_DIR=$BASE_DIR/data
 if [[ ! -d $DATA_DIR ]]
