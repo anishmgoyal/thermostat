@@ -6,7 +6,7 @@
     left: 0;
 
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
 }
@@ -21,7 +21,8 @@
 }
 
 .menu button {
-    background-color: var(--secondary-background);
+    background-color: var(--button-background);
+    color: var(--button-color);
     border: none;
     display: flex;
     flex: 1;
@@ -31,7 +32,7 @@
 }
 
 .menu button svg {
-    background: var(--secondary-background-dark);
+    background: var(--button-background-accent);
     font-size: var(--font-size-base);
     margin: 0;
     padding: var(--spacing-one-plus-half) var(--spacing-double);
@@ -44,5 +45,5 @@
 }
 
 .menu button:disabled {
-    background-color: var(--secondary-background-light);
+    background-color: var(--button-background-dark);
 }
