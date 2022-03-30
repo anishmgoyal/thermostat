@@ -23,13 +23,26 @@
 .menu button {
     background-color: var(--secondary-background);
     border: none;
-    border-radius: var(--spacing-half);
+    display: flex;
     flex: 1;
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-caption);
     outline: none;
+    padding: 0;
+}
+
+.menu button svg {
+    background: var(--secondary-background-dark);
+    font-size: var(--font-size-base);
+    margin: 0;
+    padding: var(--spacing-one-plus-half) var(--spacing-double);
+}
+
+.menu button .button-text {
+    flex: 1;
+    font-weight: bold;
     padding: var(--spacing-one-plus-half) 0;
 }
 
 .menu button:disabled {
-    background-color: var(--secondary-background-dark);
+    background-color: var(--secondary-background-light);
 }

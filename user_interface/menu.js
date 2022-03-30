@@ -8,10 +8,17 @@ function createMenuComponent() {
             <div class="menu-buttons">
                 <!--<button id="menu-edit-sched">Edit Schedule</button>-->
                 <button id="menu-update" disabled="disabled">
-                    No Update Available
+                    <i class="fa-solid fa-download"></i>
+                    <span class="button-text">No update available</span>
                 </button>
-                <button id="menu-refresh">Refresh</button>
-                <button id="menu-cancel">Cancel</button>
+                <button id="menu-refresh">
+                    <i class="fa-solid fa-rotate"></i>
+                    <span class="button-text">Refresh</span>
+                </button>
+                <button id="menu-cancel">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                    <span class="button-text">Cancel</span>
+                </button>
             </div>
         </div>
     `;
@@ -44,10 +51,16 @@ function createMenuComponent() {
 
     function setUpdateButton(isEnabled, updateButton) {
         if (isEnabled) {
-            updateButton.innerText = 'Update';
+            updateButton.innerHTML = `
+                <i class="fa-solid fa-download"></i>
+                <span class="button-text">Update</span>
+            `;
             updateButton.disabled = false;
         } else {
-            updateButton.innerText = 'No Update Available';
+            updateButton.innerHTML = `
+                <i class="fa-solid fa-download fa-lg"></i>
+                <span class="button-text">No update available</span>
+            `;
             updateButton.disabled = true;
         }
     };
@@ -59,10 +72,10 @@ function createMenuComponent() {
 
     return {
         register(thermostatComponent) {
-            thermostatComponent.menuButton.button.addEventListener(
-                'click', () => {
-                    this.open();
-                });
+            thermostatComponent.settingsButton.button.addEventListener(
+                'click',
+                () => this.open(),
+            );
         },
 
         open() {

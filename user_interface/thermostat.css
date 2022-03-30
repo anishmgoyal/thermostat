@@ -1,14 +1,16 @@
 :root {
-    --primary-background: #192538;
-    --secondary-background: #2c4264;
-    --secondary-background-dark: #1d2d44;
+    --primary-background: #090a03;
+    --secondary-background: #20232b;
+    --secondary-background-dark: #17191c;
+    --secondary-background-light: #30333b;
     --primary-text: #d9e0f3;
     --secondary-text: #c0cfe7;
-    --secondary-text-dark: #747f91;
+    --secondary-text-dark: #8490a3;
 
-    --cooling-text: rgb(148, 226, 250);
-    --heating-text: rgb(255, 118, 118);
-    --auto-text: rgb(118, 196, 116);
+    --cooling-text: rgb(99, 163, 247);
+    --heating-text: rgb(250, 93, 93);
+    --fan-text: rgb(72, 179, 68);
+    --schedule-text: rgb(214, 104, 0);
 
     --spacing-base: 10px;
     --spacing-half: calc(var(--spacing-base)*.5);
@@ -69,7 +71,69 @@ button {
 
 .header-bar {
     background-color: var(--secondary-background);
+    display: flex;
+    flex-direction: row;
     padding: var(--spacing-four) var(--spacing-double) var(--spacing-base);
+}
+
+.header-bar button {
+    background: none;
+    border: none;
+    border-radius: 999px;
+    font-size: var(--font-size-medium);
+    padding: var(--spacing-base);
+    margin-bottom: -1 * var(--spacing-base);
+}
+
+.header-bar button#heat-activation-button {
+    color: var(--heating-text);
+}
+
+.header-bar button#cool-activation-button {
+    color: var(--cooling-text);
+}
+
+.header-bar button#fan-activation-button {
+    color: var(--fan-text);
+}
+
+.header-bar button#sched-activation-button {
+    color: var(--schedule-text);
+}
+
+.header-bar button#settings-button {
+    color: var(--secondary-text);
+}
+
+.header-bar button#heat-activation-button.disabled-function,
+.header-bar button#cool-activation-button.disabled-function,
+.header-bar button#fan-activation-button.disabled-function,
+.header-bar button#sched-activation-button.disabled-function {
+    color: var(--secondary-text-dark);
+}
+
+.header-bar button.activated-function {
+    animation: blink-animation 1s infinite linear;
+    animation-direction: alternate;
+    background-color: var(--secondary-background-light);
+}
+
+@keyframes blink-animation {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.5;
+    }
+}
+
+
+.header-bar-left {
+    flex-grow: 1;
+}
+
+.header-bar-right {
+    flex-grow: 0;
 }
 
 .header-bar-time {
@@ -89,15 +153,14 @@ button {
 
 .main-content .temperature-panel {
     --grid-size: 3;
-    --grid-spacing-ratio: calc((var(--grid-size)-1)/var(--grid-size));
-    --spacing-allotment: calc(var(--spacing-base)*var(--grid-spacing-ratio));
-    --grid-dimension: calc(33.3333% - var(--spacing-allotment));
+    --cell-dim: 33.3333%;
+    --spacing-per-column: calc(var(--spacing-base)*2/3);
 
     display: grid;
-    flex-basis: 75%;
+    flex: 1;
     gap: var(--spacing-base);
-    grid-template-rows: repeat(var(--grid-size), var(--grid-dimension));
-    grid-template-columns: repeat(var(--grid-size), var(--grid-dimension));
+    grid-template-rows: repeat(var(--grid-size), calc(var(--cell-dim) - var(--spacing-per-column)));
+    grid-template-columns: repeat(var(--grid-size), calc(var(--cell-dim) - var(--spacing-per-column)));
     margin: var(--spacing-base);
     max-height: 100%;
     overflow: hidden;
@@ -106,7 +169,6 @@ button {
 .temperature-panel .temperature-panel-main,
 .temperature-panel .temperature-panel-secondary {
     align-items: center;
-    border-radius: var(--spacing-base);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -195,34 +257,30 @@ button {
     text-align: center;
 }
 
-.footer-bar {
-    display: flex;
-    flex: 0;
-    gap: var(--spacing-base);
-    padding: var(--spacing-base);
-}
-
-.footer-bar-button {
+.footer-panel {
+    align-items: center;
     background-color: var(--secondary-background);
-    border: none;
-    border-radius: var(--spacing-half);
+    display: flex;
+    justify-content: stretch;
+    padding: var(--spacing-double) 0;
+}
+
+.footer-panel-item {
     flex: 1;
-    outline: none;
-    padding: var(--spacing-base) 0;
+    text-align: center;
 }
 
-.footer-bar-button-value {
-    font-weight: bold;
-    font-size: var(--font-size-base);
-    margin-bottom: var(--spacing-half);
-}
-
-.footer-bar-button-target {
-    font-size: var(--font-size-base);
-    font-weight: bold;
-}
-
-.footer-bar-button-target.text-secondary {
-    font-weight: normal;
+.footer-panel-item-header {
     font-size: var(--font-size-caption);
+}
+
+.footer-panel-item-controls {
+    font-size: var(--font-size-medium);
+}
+
+.footer-panel-item-controls button {
+    background: none;
+    border: none;
+    color: var(--secondary-text-dark);
+    font-size: var(--font-size-medium);
 }

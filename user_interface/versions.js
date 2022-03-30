@@ -60,7 +60,7 @@ function createVersionManager() {
 const versionManager = createVersionManager();
 sseSubscription.filter('consumer_init').subscribe(consumerInit => {
     const initVersion = consumerInit['service_version'];
-    if (initVersion != null && initVersion !== BUILD_VER) {
+    if (initVersion != null && initVersion !== BUILD_VER && !LOCAL_DEV_MODE) {
         // We've detected a change in thermostat version, reload the page
         window.location.reload();
     }

@@ -5,8 +5,9 @@ const runDataManager = createGenericApiManager('rundata', 'run_data', {
         runDataHelpers.registerTempControl(thermostatComponent.heatingControl,
             'target_heat_temp');
 
-        runDataHelpers.registerSystemButton(thermostatComponent);
         runDataHelpers.registerFanButton(thermostatComponent);
+        runDataHelpers.registerToggleCool(thermostatComponent);
+        runDataHelpers.registerToggleHeat(thermostatComponent);
 
         this.onUpdate.subscribe(runData => {
             runDataHelpers.applyToUI(thermostatComponent, runData);
@@ -17,44 +18,20 @@ const runDataManager = createGenericApiManager('rundata', 'run_data', {
 // Helper functions
 const runDataHelpers = {
     applyToUI(thermostatComponent, runData) {
-        const modeStr = {
-            [MODE_OFF]: 'Off',
-            [MODE_COOL]: 'Cool',
-            [MODE_HEAT]: 'Heat',
-            [MODE_AUTO]: 'Auto',
-        }[runData['active_mode']];
-    
-        const modeClass = `text-${labelToClassName(modeStr)}`;
-        thermostatComponent.systemButton.updateValue(modeStr, modeClass);
+        const activeMode = runData['active_mode'];
+        thermostatComponent.coolButton.setEnabled(
+            [MODE_COOL, MODE_AUTO].includes(activeMode));
+        thermostatComponent.heatButton.setEnabled(
+            [MODE_HEAT, MODE_AUTO].includes(activeMode));
+        thermostatComponent.fanButton.setEnabled(runData['fan_enabled']);
 
-        const [showHeat, showCool] = {
-            [MODE_OFF]: [false, false],
-            [MODE_COOL]: [false, true],
-            [MODE_HEAT]: [true, false],
-            [MODE_AUTO]: [true, true],
-        }[runData['active_mode']];
-        thermostatComponent.heatingControl.setVisible(showHeat);
-        thermostatComponent.coolingControl.setVisible(showCool);
+        thermostatComponent.coolingControl.setVisible(
+            thermostatComponent.coolButton.isEnabled());
+        thermostatComponent.heatingControl.setVisible(
+            thermostatComponent.heatButton.isEnabled());
 
         // TODO: Disable the plus / minus button if it would make the temp
         // diff between heat and cool too small
-    
-        const fanStr = {
-            true: 'On',
-            false: 'Auto',
-        }[runData['fan_enabled']];
-    
-        const fanClass = `text-${labelToClassName(fanStr)}`;
-        thermostatComponent.fanButton.updateValue(fanStr, fanClass);
-    
-        const behaviorStr = {
-            [BEHAVE_HOLD]: 'Hold',
-            [BEHAVE_SCHED]: 'Schedule',
-        }[runData['behavior']];
-    
-        const behaviorClass = `text-${labelToClassName(behaviorStr)}`;
-        thermostatComponent.modeButton.updateValue(
-            behaviorStr, behaviorClass);
     
         const appliedSettings = runData['settings'][runData['active_mode']];
         const targetHeat = appliedSettings?.['target_heat_temp'];
@@ -98,19 +75,6 @@ const runDataHelpers = {
             'click', () => runDataHelpers.doTempChange(key, +1));
     },
 
-    registerSystemButton(thermostatComponent) {
-        thermostatComponent.systemButton.button.addEventListener('click', () => {
-            if (runDataManager.isUpdating) {
-                return;
-            }
-            
-            const runData = runDataManager.getWorkingCopy();
-            runData['active_mode'] =
-                (runData['active_mode'] + 1) % 4;
-            runDataManager.update(runData);
-        });
-    },
-
     registerFanButton(thermostatComponent) {
         thermostatComponent.fanButton.button.addEventListener('click', () => {
             if (runDataManager.isUpdating) {
@@ -122,6 +86,36 @@ const runDataHelpers = {
                 !runData['fan_enabled'];
             runDataManager.update(runData);
         });
+    },
+
+    registerToggleCool(thermostatComponent) {
+        thermostatComponent.coolButton.button.addEventListener('click', () => {
+            this.updateActiveMode(thermostatComponent, MODE_COOL);
+        });
+    },
+
+    registerToggleHeat(thermostatComponent) {
+        thermostatComponent.heatButton.button.addEventListener('click', () => {
+            this.updateActiveMode(thermostatComponent, MODE_HEAT);
+        });
+    },
+
+    updateActiveMode(thermostatComponent, updateMask) {
+        if (runDataManager.isUpdating) {
+            return;
+        }
+
+        const runData = runDataManager.getWorkingCopy();
+        let mask = 0;
+        // MODE_COOL = 1, MODE_HEAT = 2, MODE_AUTO = MODE_COOL | MODE_HEAT
+        if (thermostatComponent.coolButton.isEnabled()) {
+            mask |= MODE_COOL;
+        }
+        if (thermostatComponent.heatButton.isEnabled()) {
+            mask |= MODE_HEAT;
+        }
+        runData['active_mode'] = mask ^ updateMask;
+        runDataManager.update(runData);
     },
 
     registerModeButton(thermostatComponent) {

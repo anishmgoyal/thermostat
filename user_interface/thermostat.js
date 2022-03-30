@@ -34,10 +34,11 @@ window.addEventListener('load', () => {
     const coolingControl = createTempControl('cooling-control');
     const heatingControl = createTempControl('heating-control');
 
-    const systemButton = createFooterBarButton('system-button');
-    const fanButton = createFooterBarButton('fan-button');
-    const modeButton = createFooterBarButton('mode-button');
-    const menuButton = createFooterBarButton('menu-button');
+    const heatButton = createHeaderBarButton('heat-activation-button');
+    const coolButton = createHeaderBarButton('cool-activation-button');
+    const fanButton = createHeaderBarButton('fan-activation-button');
+    const schedButton = createHeaderBarButton('sched-activation-button');
+    const settingsButton = createHeaderBarButton('settings-button');
 
     const component = {
         addExternalSensor(id, displayName, tempC) {
@@ -108,15 +109,15 @@ window.addEventListener('load', () => {
         },
         coolingControl,
         heatingControl,
-        systemButton,
+
+        heatButton,
+        coolButton,
         fanButton,
-        modeButton,
-        menuButton,
+        schedButton,
+        settingsButton,
     };
 
     component.registerInterval(component.updateDateTime, 1000);
-    component.systemButton.updateValue('Heat', 'text-heating');
-    component.fanButton.updateValue('Auto');
 
     sseSubscription.filter('sensor_reading').subscribe(reading => {
         if (reading['sensor_type'] !== 'temp' ||
@@ -134,6 +135,7 @@ window.addEventListener('load', () => {
 
     const baseThermostatComponent = component;
     menuComponent.register(baseThermostatComponent);
+    currentStateManager.register(baseThermostatComponent);
     runDataManager.register(baseThermostatComponent);
 });
 
@@ -144,10 +146,10 @@ const createTempControl = function(baseId) {
     const valueElem = document.getElementById(`${baseId}-value`);
     return {
         hideControl() {
-            control.style.display = 'none';
+            control.style.visibility = 'hidden';
         },
         showControl() {
-            control.style.display = '';
+            control.style.visibility = 'visible';
         },
         setVisible(visible) {
             if (!visible) {
@@ -164,26 +166,50 @@ const createTempControl = function(baseId) {
     };
 }
 
-createFooterBarButton = function(id) {
+function createHeaderBarButton(id) {
     const button = document.getElementById(id);
-    const valueElem =
-        button.getElementsByClassName('footer-bar-button-value')?.[0] ?? null;
-    let internalValueClass = '';
+    button.classList.add('disabled-function');
+    let isActive = false;
+    let isEnabled = false;
+
     return {
         button,
-        updateValue(newValue, valueClass) {
-            if (valueElem == null) {
-                return;
+        activate() {
+            isActive = true;
+            button.classList.add('activated-function');
+        },
+        deactivate() {
+            isActive = false;
+            button.classList.remove('activated-function');
+        },
+        setActive(_isActive) {
+            if (_isActive) {
+                this.activate();
+            } else {
+                this.deactivate();
             }
-            if (internalValueClass) {
-                valueElem.classList.remove(internalValueClass);
-                internalValueClass = '';
+        },
+        isActive() {
+            return isActive;
+        },
+
+        enable() {
+            isEnabled = true;
+            button.classList.remove('disabled-function');
+        },
+        disable() {
+            isEnabled = false;
+            button.classList.add('disabled-function');
+        },
+        setEnabled(_isEnabled) {
+            if (_isEnabled) {
+                this.enable();
+            } else {
+                this.disable();
             }
-            if (valueClass) {
-                valueElem.classList.add(valueClass);
-                internalValueClass = valueClass;
-            }
-            valueElem.innerText = newValue;
+        },
+        isEnabled() {
+            return isEnabled;
         },
     }
 }
@@ -194,3 +220,7 @@ window.addEventListener('keypress', ev => {
         document.body.style.cursor = 'auto';
     }
 });
+
+if (LOCAL_DEV_MODE) {
+    document.body.style.cursor = 'auto';
+}
