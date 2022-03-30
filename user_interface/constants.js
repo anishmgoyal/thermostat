@@ -15,4 +15,4 @@ const MIN_ALLOWED_TEMP_DIFF = 2.2222;
 
 const MAIN_TEMP_SENSOR_ID = 'amg_thermostat_main';
 
-const LOCAL_DEV_MODE = true;
+const LOCAL_DEV_MODE = false;

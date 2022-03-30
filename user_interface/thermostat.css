@@ -1,8 +1,8 @@
 :root {
-    --primary-background: #090a03;
-    --secondary-background: #20232b;
-    --secondary-background-dark: #17191c;
-    --secondary-background-light: #30333b;
+    --primary-background: #0a0b0c;
+    --secondary-background: #1b1c1d;
+    --secondary-background-dark: #121314;
+    --secondary-background-light: #202122;
     --primary-text: #d9e0f3;
     --secondary-text: #c0cfe7;
     --secondary-text-dark: #8490a3;
@@ -275,12 +275,12 @@ button {
 }
 
 .footer-panel-item-controls {
-    font-size: var(--font-size-medium);
+    font-size: var(--font-size-large);
 }
 
 .footer-panel-item-controls button {
     background: none;
     border: none;
     color: var(--secondary-text-dark);
-    font-size: var(--font-size-medium);
+    font-size: var(--font-size-large);
 }
