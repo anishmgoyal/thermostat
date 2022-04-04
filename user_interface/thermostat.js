@@ -134,8 +134,9 @@ window.addEventListener('load', () => {
     });
 
     const baseThermostatComponent = component;
-    menuComponent.register(baseThermostatComponent);
+    apiRegistry.register();
     currentStateManager.register(baseThermostatComponent);
+    menuComponent.register(baseThermostatComponent);
     runDataManager.register(baseThermostatComponent);
 });
 

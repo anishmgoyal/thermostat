@@ -1,3 +1,21 @@
+function createAPIRegistry() {
+    const managers = [];
+
+    return {
+        register() {
+            for (let manager of managers) {
+                manager.addEventHandlers();
+                manager.reload();
+            }
+        },
+
+        addManager(manager) {
+            managers.push(manager);
+        },
+    }
+}
+const apiRegistry = createAPIRegistry();
+
 function createGenericApiManager(configType, subfolder, props = {}) {
     const url = `${apiRoot}/${subfolder}`;
     const updateEvents = sseSubscription.onConfigUpdate(configType).map(
@@ -10,10 +28,21 @@ function createGenericApiManager(configType, subfolder, props = {}) {
     // missed events during connection
     const initEvents = sseSubscription.filter('consumer_init');
 
+    // Keeps track of whether or not we've added a subscription to the
+    // updateEvents and initEvents streams
+    let addedEventHandlers = false;
+
     const manager = {
         snapshot: null,
         onUpdate: createSubscriptionNode(),
         isUpdating: false,
+        addEventHandlers() {
+            if (!addedEventHandlers) {
+                addedEventHandlers = true;
+                updateEvents.subscribe(() => manager.reload());
+                initEvents.subscribe(() => manager.reload());
+            }
+        },
         getWorkingCopy() {
             return JSON.parse(JSON.stringify(this.snapshot));
         },
@@ -56,9 +85,6 @@ function createGenericApiManager(configType, subfolder, props = {}) {
         },
         ...props,
     };
-
-    updateEvents.subscribe(() => manager.reload());
-    initEvents.subscribe(() => manager.reload());
-    manager.reload();
+    apiRegistry.addManager(manager);
     return manager;
 }
