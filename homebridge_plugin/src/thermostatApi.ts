@@ -11,7 +11,7 @@ const RECONNECT_WAIT = 1000;
 
 const THERMOSTAT_API_PORT = 8001;
 
-const MIN_THRESHOLD_DIFF = 2.2; // Degrees celsius, translates to 4F
+const MIN_THRESHOLD_DIFF = 2.1; // Degrees celsius, translates to 4F
 
 /**
  * Exposes methods for getting current configuration, and providing new

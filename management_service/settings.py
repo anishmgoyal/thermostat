@@ -2,7 +2,7 @@ from main import app
 from tstatcommon import data
 import util_validators
 
-MIN_ALLOWED_TEMP_DIFF = 2.2  # in celsius, 4 in fahremheit
+MIN_ALLOWED_TEMP_DIFF = 2.1  # in celsius, 3.8 in fahremheit
 
 
 def roundSettings(settings):
