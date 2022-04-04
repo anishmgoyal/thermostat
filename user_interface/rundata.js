@@ -10,6 +10,7 @@ const runDataManager = createGenericApiManager('rundata', 'run_data', {
         runDataHelpers.registerToggleHeat(thermostatComponent);
 
         this.onUpdate.subscribe(runData => {
+            console.debug(`Applying runData to UI: ${runData}`);
             runDataHelpers.applyToUI(thermostatComponent, runData);
         });
     }

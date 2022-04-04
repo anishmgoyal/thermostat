@@ -27,6 +27,7 @@ function createGenericApiManager(configType, subfolder, props = {}) {
                 this.onUpdate.dispatch(data);
                 return data;
             } catch (e) {
+                console.error(`Failed to load config ${configType}`, e);
                 return this.snapshot;
             } finally {
                 this.isUpdating = false;

@@ -18,6 +18,7 @@ def runData():
     else:
         new_run_data = request.get_json()
         swap_file = data.filenames.getSwapFile(data.filenames.RUNDATA_FILE)
+        normalizeRunData(new_run_data)
         if validateRunData(new_run_data):
             with _LOCK:
                 # write to the swap file to prevent data corruption mid-write
@@ -37,7 +38,15 @@ def normalizeRunData(run_data):
     """ Rounds all temps to one decimal place """
 
     if data.CFG_SETTINGS in run_data:
-        settings.roundSettings(run_data[data.CFG_SETTINGS])
+        rundata_settings = run_data[data.CFG_SETTINGS]
+        if constants.MODE_COOL in rundata_settings:
+            settings.roundSettings(rundata_settings[constants.MODE_COOL])
+
+        if constants.MODE_HEAT in rundata_settings:
+            settings.roundSettings(rundata_settings[constants.MODE_HEAT])
+
+        if constants.MODE_AUTO in rundata_settings:
+            settings.roundSettings(rundata_settings[constants.MODE_AUTO])
 
 
 def validateRunData(run_data) -> bool:
