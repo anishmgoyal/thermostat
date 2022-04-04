@@ -9,7 +9,8 @@ CFG_LAST_HEAT_ENABLE_TIME = 'last_heat_enable_time'
 CFG_LAST_COOL_DISABLE_TIME = 'last_cool_disable_time'
 CFG_LAST_COOL_ENABLE_TIME = 'last_cool_enable_time'
 
-CHANGE_THRESHOLD_TIME_SECONDS = 120  # 2 minutes
+SHUTDOWN_THRESHOLD_TIME_SECONDS = 60 # one minute before stopping after start
+STARTUP_THRESHOLD_TIME_SECONDS = 240 # four minutes before starting after stop
 
 
 class RecentActivity(object):
@@ -20,48 +21,24 @@ class RecentActivity(object):
 
     def canToggle(self) -> bool:
         """ Check that it's safe to toggle the thermostat -
-            make sure that we haven't changed anything for 5 minutes
+            make sure that we haven't changed anything for some time
             to prevent short cycling """
+
         now = time.time()
-        most_recent_action_time = max(
+        most_recent_disable_time = max(
             self.getLastCoolDisableTime(),
+            self.getLastHeatDisableTime())
+
+        most_recent_enable_time = max(
             self.getLastCoolEnableTime(),
-            self.getLastHeatDisableTime(),
             self.getLastHeatEnableTime())
-        elapsed = now - most_recent_action_time
-        return elapsed > CHANGE_THRESHOLD_TIME_SECONDS
 
-    def canToggleHeat(self) -> bool:
-        """ Make sure that cooling has been off for at least 5
-            mins, and that we haven't recently cycled heating """
-        now = time.time()
-        heat_disable = self.getLastHeatDisableTime()
-        heat_enable = self.getLastHeatEnableTime()
-        cool_disable = self.getLastCoolDisableTime()
-        cool_enable = self.getLastCoolEnableTime()
-        logging.debug("heat dis {}, en {}, cool dis {}, en {}, now {}".format(
-            heat_disable, heat_enable, cool_disable, cool_enable, now))
+        elapsed_disable = now - most_recent_disable_time
+        elapsed_enable = now - most_recent_enable_time
 
-        return (
-            cool_enable <= cool_disable and
-            now - cool_disable > CHANGE_THRESHOLD_TIME_SECONDS and
-            now - max(heat_enable, heat_disable) > CHANGE_THRESHOLD_TIME_SECONDS)
+        return (elapsed_disable > STARTUP_THRESHOLD_TIME_SECONDS and
+                elapsed_enable > SHUTDOWN_THRESHOLD_TIME_SECONDS)
 
-    def canToggleCool(self) -> bool:
-        """ Make sure that heating has been off for at least 5
-            mins, and that we haven't recently cycled cooling """
-        now = time.time()
-        heat_disable = self.getLastHeatDisableTime()
-        heat_enable = self.getLastHeatEnableTime()
-        cool_disable = self.getLastCoolDisableTime()
-        cool_enable = self.getLastCoolEnableTime()
-        logging.debug("heat dis {}, en {}, cool dis {}, en {}, now {}".format(
-            heat_disable, heat_enable, cool_disable, cool_enable, now))
-
-        return (
-            heat_enable <= heat_disable and
-            now - heat_disable > CHANGE_THRESHOLD_TIME_SECONDS and
-            now - max(cool_enable, cool_disable) > CHANGE_THRESHOLD_TIME_SECONDS)
 
     """
     Getters and setters
