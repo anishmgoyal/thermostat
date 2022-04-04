@@ -1,6 +1,7 @@
 from tstatcommon.constants import LOCAL_DEV_MODE
 
-MQTT_HOSTNAME = 'localhost' if LOCAL_DEV_MODE else 'amgthermostathub.local'
+MQTT_HOSTNAME = 'amgthermostathub.local' if LOCAL_DEV_MODE else 'localhost'
+MQTT_HUB_HOSTNAME = 'amgthermostathub.local' # hostname of main thermostat
 MQTT_TOPIC = '/house/amg_thermostat/events'
 
 # Common event configs

@@ -1,0 +1,103 @@
+.keyboard {
+  --button-background: #eee;
+  --button-background-highlight: #999;
+  --button-background-dark: #bbb;
+  --button-background-dark-highlight: #777;
+  --primary-text: black;
+  --secondary-text: black;
+
+  --floating-text: white;
+  --floating-text-secondary: #ccc;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+}
+
+.keyboard-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.keyboard-exit-control {
+  margin-bottom: var(--spacing-half);
+  text-align: right;
+}
+
+.keyboard-exit-control button {
+  background: none;
+  border: none;
+  color: var(--inverted-text);
+  font-size: var(--font-size-large);
+}
+
+.keyboard-display-row {
+  align-items: center;
+  display: flex;
+  font-size: var(--font-size-xlarge);
+  padding: var(--spacing-base) 0;
+}
+
+.keyboard-display:after {
+  content: '.';
+  color: transparent;
+  font-size: 0;
+}
+
+.keyboard-display {
+  color: var(--floating-text);
+  font-size: var(--font-size-xlarge);
+  margin-right: var(--spacing-half);
+}
+
+.keyboard-display-cursor {
+  color: var(--floating-text-secondary);
+  animation: blink-animation 0.5s infinite linear;
+  animation-direction: alternate;
+  font-size: var(--font-size-large);
+  vertical-align: top;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: var(--spacing-half);
+  justify-content: center;
+  margin: var(--spacing-half) 0;
+  text-align: center;
+}
+
+.keyboard-button {
+  background: var(--button-background);
+  border: none;
+  border-radius: var(--spacing-half);
+  box-shadow: 1px 1px 0 var(--button-background-highlight);
+  color: var(--primary-text);
+  font-size: var(--font-size-base);
+  height: calc(var(--spacing-triple));
+  margin: 0;
+  padding: var(--spacing-half) var(--spacing-base);
+  text-align: center;
+}
+
+.keyboard-button-number, .keyboard-button-letter {
+  padding: var(--spacing-half) 0;
+  width: var(--spacing-triple);
+}
+
+.keyboard-button-space {
+  padding: var(--spacing-half) var(--spacing-five);
+}
+
+.keyboard-button-special {
+  background-color: var(--button-background-dark);
+  box-shadow: 1px 1px 0 var(--button-background-dark-highlight);
+  color: var(--secondary-text);
+  padding: var(--spacing-half) var(--spacing-one-plus-half);
+}
