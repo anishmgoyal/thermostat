@@ -6,8 +6,8 @@
             "start_hour": 9,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 20.5556,
-                "target_cool_temp": 23.3332
+                "target_heat_temp": 20.6,
+                "target_cool_temp": 23.3
             }
         },
         {
@@ -17,7 +17,7 @@
             "start_minute": 0,
             "settings": {
                 "target_heat_temp": 20,
-                "target_cool_temp": 22.7778
+                "target_cool_temp": 22.8
             }
         },
         {
@@ -26,7 +26,7 @@
             "start_hour": 9,
             "start_minute": 0,
             "settings": {
-                "target_cool_temp": 22.7778
+                "target_cool_temp": 22.8
             }
         },
         {
@@ -35,7 +35,7 @@
             "start_hour": 23,
             "start_minute": 0,
             "settings": {
-                "target_cool_temp": 21.6667
+                "target_cool_temp": 21.7
             }
         },
         {
@@ -44,7 +44,7 @@
             "start_hour": 9,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 22.2222
+                "target_heat_temp": 22.2
             }
         },
         {
@@ -53,7 +53,7 @@
             "start_hour": 23,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 21.1111
+                "target_heat_temp": 21.1
             }
         },
         {
@@ -62,8 +62,8 @@
             "start_hour": 6,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 20.5556,
-                "target_cool_temp": 23.3332
+                "target_heat_temp": 20.6,
+                "target_cool_temp": 23.3
             }
         },
         {
@@ -73,7 +73,7 @@
             "start_minute": 30,
             "settings": {
                 "target_heat_temp": 20,
-                "target_cool_temp": 22.7778
+                "target_cool_temp": 22.8
             }
         },
         {
@@ -82,7 +82,7 @@
             "start_hour": 6,
             "start_minute": 0,
             "settings": {
-                "target_cool_temp": 22.7778
+                "target_cool_temp": 22.8
             }
         },
         {
@@ -91,7 +91,7 @@
             "start_hour": 21,
             "start_minute": 30,
             "settings": {
-                "target_cool_temp": 21.6667
+                "target_cool_temp": 21.7
             }
         },
         {
@@ -100,7 +100,7 @@
             "start_hour": 6,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 22.2222
+                "target_heat_temp": 22.2
             }
         },
         {
@@ -109,7 +109,7 @@
             "start_hour": 21,
             "start_minute": 30,
             "settings": {
-                "target_heat_temp": 21.1111
+                "target_heat_temp": 21.1
             }
         },
         {
@@ -118,8 +118,8 @@
             "start_hour": 6,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 20.5556,
-                "target_cool_temp": 23.3332
+                "target_heat_temp": 20.6,
+                "target_cool_temp": 23.3
             }
         },
         {
@@ -129,7 +129,7 @@
             "start_minute": 30,
             "settings": {
                 "target_heat_temp": 20,
-                "target_cool_temp": 22.7778
+                "target_cool_temp": 22.8
             }
         },
         {
@@ -138,7 +138,7 @@
             "start_hour": 6,
             "start_minute": 0,
             "settings": {
-                "target_cool_temp": 22.7778
+                "target_cool_temp": 22.8
             }
         },
         {
@@ -147,7 +147,7 @@
             "start_hour": 21,
             "start_minute": 30,
             "settings": {
-                "target_cool_temp": 21.6667
+                "target_cool_temp": 21.7
             }
         },
         {
@@ -156,7 +156,7 @@
             "start_hour": 6,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 22.2222
+                "target_heat_temp": 22.2
             }
         },
         {
@@ -165,7 +165,7 @@
             "start_hour": 21,
             "start_minute": 30,
             "settings": {
-                "target_heat_temp": 21.1111
+                "target_heat_temp": 21.1
             }
         },
         {
@@ -174,8 +174,8 @@
             "start_hour": 6,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 20.5556,
-                "target_cool_temp": 23.3332
+                "target_heat_temp": 20.6,
+                "target_cool_temp": 23.3
             }
         },
         {
@@ -185,7 +185,7 @@
             "start_minute": 30,
             "settings": {
                 "target_heat_temp": 20,
-                "target_cool_temp": 22.7778
+                "target_cool_temp": 22.8
             }
         },
         {
@@ -194,7 +194,7 @@
             "start_hour": 6,
             "start_minute": 0,
             "settings": {
-                "target_cool_temp": 22.7778
+                "target_cool_temp": 22.8
             }
         },
         {
@@ -203,7 +203,7 @@
             "start_hour": 21,
             "start_minute": 30,
             "settings": {
-                "target_cool_temp": 21.6667
+                "target_cool_temp": 21.7
             }
         },
         {
@@ -212,7 +212,7 @@
             "start_hour": 6,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 22.2222
+                "target_heat_temp": 22.2
             }
         },
         {
@@ -221,7 +221,7 @@
             "start_hour": 21,
             "start_minute": 30,
             "settings": {
-                "target_heat_temp": 21.1111
+                "target_heat_temp": 21.1
             }
         },
         {
@@ -230,8 +230,8 @@
             "start_hour": 6,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 20.5556,
-                "target_cool_temp": 23.3332
+                "target_heat_temp": 20.6,
+                "target_cool_temp": 23.3
             }
         },
         {
@@ -241,7 +241,7 @@
             "start_minute": 30,
             "settings": {
                 "target_heat_temp": 20,
-                "target_cool_temp": 22.7778
+                "target_cool_temp": 22.8
             }
         },
         {
@@ -250,7 +250,7 @@
             "start_hour": 6,
             "start_minute": 0,
             "settings": {
-                "target_cool_temp": 22.7778
+                "target_cool_temp": 22.8
             }
         },
         {
@@ -259,7 +259,7 @@
             "start_hour": 21,
             "start_minute": 30,
             "settings": {
-                "target_cool_temp": 21.6667
+                "target_cool_temp": 21.7
             }
         },
         {
@@ -268,7 +268,7 @@
             "start_hour": 6,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 22.2222
+                "target_heat_temp": 22.2
             }
         },
         {
@@ -277,7 +277,7 @@
             "start_hour": 21,
             "start_minute": 30,
             "settings": {
-                "target_heat_temp": 21.1111
+                "target_heat_temp": 21.1
             }
         },
         {
@@ -286,8 +286,8 @@
             "start_hour": 6,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 20.5556,
-                "target_cool_temp": 23.3332
+                "target_heat_temp": 20.6,
+                "target_cool_temp": 23.3
             }
         },
         {
@@ -297,7 +297,7 @@
             "start_minute": 30,
             "settings": {
                 "target_heat_temp": 20,
-                "target_cool_temp": 22.7778
+                "target_cool_temp": 22.8
             }
         },
         {
@@ -306,7 +306,7 @@
             "start_hour": 6,
             "start_minute": 0,
             "settings": {
-                "target_cool_temp": 22.7778
+                "target_cool_temp": 22.8
             }
         },
         {
@@ -315,7 +315,7 @@
             "start_hour": 21,
             "start_minute": 30,
             "settings": {
-                "target_cool_temp": 21.6667
+                "target_cool_temp": 21.7
             }
         },
         {
@@ -324,7 +324,7 @@
             "start_hour": 6,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 22.2222
+                "target_heat_temp": 22.2
             }
         },
         {
@@ -333,7 +333,7 @@
             "start_hour": 21,
             "start_minute": 30,
             "settings": {
-                "target_heat_temp": 21.1111
+                "target_heat_temp": 21.1
             }
         },
         {
@@ -342,8 +342,8 @@
             "start_hour": 9,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 20.5556,
-                "target_cool_temp": 23.3332
+                "target_heat_temp": 20.6,
+                "target_cool_temp": 23.3
             }
         },
         {
@@ -353,7 +353,7 @@
             "start_minute": 0,
             "settings": {
                 "target_heat_temp": 20,
-                "target_cool_temp": 22.7778
+                "target_cool_temp": 22.8
             }
         },
         {
@@ -362,7 +362,7 @@
             "start_hour": 9,
             "start_minute": 0,
             "settings": {
-                "target_cool_temp": 22.7778
+                "target_cool_temp": 22.8
             }
         },
         {
@@ -371,7 +371,7 @@
             "start_hour": 23,
             "start_minute": 0,
             "settings": {
-                "target_cool_temp": 21.6667
+                "target_cool_temp": 21.7
             }
         },
         {
@@ -380,7 +380,7 @@
             "start_hour": 9,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 22.2222
+                "target_heat_temp": 22.2
             }
         },
         {
@@ -389,7 +389,7 @@
             "start_hour": 23,
             "start_minute": 0,
             "settings": {
-                "target_heat_temp": 21.1111
+                "target_heat_temp": 21.1
             }
         }
     ]

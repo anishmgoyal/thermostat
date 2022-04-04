@@ -5,13 +5,13 @@
     "settings": [
         null,
         {
-            "target_cool_temp": 21.1111
+            "target_cool_temp": 21.1
         },
         {
-            "target_heat_temp": 21.1111
+            "target_heat_temp": 21.1
         },
         {
-            "target_cool_temp": 22.2222,
+            "target_cool_temp": 22.2,
             "target_heat_temp": 20
         }
     ]

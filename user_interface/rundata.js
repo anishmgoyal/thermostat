@@ -57,13 +57,26 @@ const runDataHelpers = {
         }
 
         const units = configManager.snapshot['display_units'];
-        const increment = units === DISPLAY_CELSIUS ? 1 : 5/9;
-        const changeAmount = increment * multiplier;
 
         const settingsToChange =
             runData['settings'][activeMode];
         if (settingsToChange?.hasOwnProperty(key)) {
-            settingsToChange[key] += changeAmount;
+            // If we're displaying in Celsius, change the temp based on the
+            // displayed celsius value. Otherwise, change it based on the
+            // displayed fahrenheit value.
+            let basisAmount = settingsToChange[key];
+            if (units === DISPLAY_FAHREN) {
+                basisAmount = Math.round(basisAmount * 9 / 5 + 32);
+            } else {
+                basisAmount = Math.round(basisAmount);
+            }
+
+            let newAmount = basisAmount + multiplier;
+            if (units === DISPLAY_FAHREN) {
+                // Convert to celsius, keeping only one decimal place
+                newAmount = Math.round((newAmount - 32) * 50 / 9) / 10;
+            }
+            settingsToChange[key] = newAmount;
         }
         runDataManager.update(runData);
     },

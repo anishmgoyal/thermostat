@@ -11,7 +11,7 @@ const RECONNECT_WAIT = 1000;
 
 const THERMOSTAT_API_PORT = 8001;
 
-const MIN_THRESHOLD_DIFF = 2.2222; // Degrees celsius, translates to 4F
+const MIN_THRESHOLD_DIFF = 2.2; // Degrees celsius, translates to 4F
 
 /**
  * Exposes methods for getting current configuration, and providing new
@@ -137,19 +137,17 @@ export class ThermostatApi {
             return null;
           }
 
-          if (runData.active_mode === ThermostatMode.AUTO) {
-            tempC = Math.max(
-              tempC,
-              runData.settings[runData.active_mode].target_heat_temp +
-                MIN_THRESHOLD_DIFF);
-          }
-
           if (tempC ===
               runData.settings[runData.active_mode].target_cool_temp) {
             return null; // no-op
           }
 
           runData.settings[runData.active_mode].target_cool_temp = tempC;
+          if (runData.active_mode === ThermostatMode.AUTO) {
+            runData.settings[runData.active_mode].target_heat_temp = Math.min(
+              runData.settings[runData.active_mode].target_heat_temp,
+              tempC - MIN_THRESHOLD_DIFF);
+          }
           return runData;
         },
       });
@@ -166,19 +164,16 @@ export class ThermostatApi {
             return null;
           }
 
-          if (runData.active_mode === ThermostatMode.AUTO) {
-            tempC = Math.min(
-              tempC,
-              runData.settings[runData.active_mode].target_cool_temp -
-                MIN_THRESHOLD_DIFF);
-          }
-
-          if (tempC ===
-              runData.settings[runData.active_mode].target_heat_temp) {
+          if (tempC === runData.settings[runData.active_mode].target_heat_temp) {
             return null; // no-op
           }
 
           runData.settings[runData.active_mode].target_heat_temp = tempC;
+          if (runData.active_mode === ThermostatMode.AUTO) {
+            runData.settings[runData.active_mode].target_cool_temp = Math.max(
+              runData.settings[runData.active_mode].target_cool_temp,
+              tempC + MIN_THRESHOLD_DIFF);
+          }
           return runData;
         },
       });

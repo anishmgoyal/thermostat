@@ -10,7 +10,7 @@ import util_validators
 _LOCK = threading.Lock()
 
 
-@app.route("/schedule", methods = ["GET", "POST"])
+@app.route("/schedule", methods=["GET", "POST"])
 def schedule():
     if request.method == "GET":
         with open(data.filenames.SCHEDULE_FILE, "r") as schedule:
@@ -21,13 +21,22 @@ def schedule():
         if validateSchedule(new_schedule):
             with _LOCK:
                 with open(swap_file, "w") as schedule:
-                    schedule.write(json.dumps(new_schedule, indent = 4))
+                    schedule.write(json.dumps(new_schedule, indent=4))
                 os.replace(swap_file, data.filenames.SCHEDULE_FILE)
 
             mqtt_client.publishUpdateConfig(mqttconstants.CONFIG_TYPE_SCHEDULE)
             return ''
         else:
             abort(400)
+
+
+def normalizeSchedule(schedule):
+    """ Rounds values in schedule to one decimal place """
+    if data.CFG_ENTRIES in schedule:
+        for entry in schedule[data.CFG_ENTRIES]:
+            if data.CFG_SETTINGS in entry:
+                settings.roundSettings(entry[data.CFG_SETTINGS])
+
 
 def validateSchedule(schedule) -> bool:
     if data.CFG_ENTRIES not in schedule:
@@ -44,6 +53,7 @@ def validateSchedule(schedule) -> bool:
 
     return True
 
+
 def validateScheduleEntry(entry) -> bool:
     if data.CFG_MODE not in entry:
         app.logger.info('schedule entry is missing mode')
@@ -52,7 +62,7 @@ def validateScheduleEntry(entry) -> bool:
     if mode not in constants.ALL_MODES or mode == constants.MODE_OFF:
         app.logger.info('schedule entry has invalid mode {}'.format(mode))
         return False
-    
+
     if data.CFG_DAY_OF_WEEK not in entry:
         app.logger.info('schedule entry is missing day of week')
         return False
@@ -84,5 +94,5 @@ def validateScheduleEntry(entry) -> bool:
     # needs one.
     return settings.validateSettings(
         entry[data.CFG_SETTINGS],
-        require_cool = mode in [constants.MODE_COOL, constants.MODE_AUTO],
-        require_heat = mode in [constants.MODE_HEAT, constants.MODE_AUTO])
+        require_cool=mode in [constants.MODE_COOL, constants.MODE_AUTO],
+        require_heat=mode in [constants.MODE_HEAT, constants.MODE_AUTO])

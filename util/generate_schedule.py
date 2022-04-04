@@ -1,16 +1,16 @@
 import calendar
 import json
 
-AUTO_NIGHT_COOL = 22.7778 # 73F
+AUTO_NIGHT_COOL = 22.8 # 73F
 AUTO_NIGHT_HEAT = 20 # 68F
-AUTO_DAY_COOL = 23.3332 # 74F
-AUTO_DAY_HEAT = 20.5556 # 69F
+AUTO_DAY_COOL = 23.3 # 74F
+AUTO_DAY_HEAT = 20.6 # 69F
 
-COOL_NIGHT = 21.6667 # 71F
-COOL_DAY = 22.7778 # 73F
+COOL_NIGHT = 21.7 # 71F
+COOL_DAY = 22.8 # 73F
 
-HEAT_NIGHT = 21.1111 # 70F
-HEAT_DAY = 22.2222 # 72F
+HEAT_NIGHT = 21.1 # 70F
+HEAT_DAY = 22.2 # 72F
 
 MODE_COOL = 1
 MODE_HEAT = 2
@@ -96,7 +96,7 @@ for day in days:
     }])
 
 if __name__ == '__main__':
-    with open('thermostat_controller/config/schedule.json', 'w') as sched:
+    with open('default_config/schedule.json', 'w') as sched:
         json.dump({
             "entries": entries
         }, sched, indent=4)

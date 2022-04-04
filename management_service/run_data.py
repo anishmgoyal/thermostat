@@ -22,7 +22,7 @@ def runData():
             with _LOCK:
                 # write to the swap file to prevent data corruption mid-write
                 with open(swap_file, "w") as run_data:
-                    run_data.write(json.dumps(new_run_data, indent = 4))
+                    run_data.write(json.dumps(new_run_data, indent=4))
                 # now that we've written the file fully, update the inodes on
                 # the file system
                 os.replace(swap_file, data.filenames.RUNDATA_FILE)
@@ -30,7 +30,14 @@ def runData():
             mqtt_client.publishUpdateConfig(mqttconstants.CONFIG_TYPE_RUNDATA)
             return ''
         else:
-            abort(400) # Invalid request
+            abort(400)  # Invalid request
+
+
+def normalizeRunData(run_data):
+    """ Rounds all temps to one decimal place """
+
+    if data.CFG_SETTINGS in run_data:
+        settings.roundSettings(run_data[data.CFG_SETTINGS])
 
 
 def validateRunData(run_data) -> bool:
@@ -51,7 +58,7 @@ def validateRunData(run_data) -> bool:
 
     if data.CFG_SETTINGS not in run_data:
         return False
-    
+
     if len(constants.ALL_MODES) != 4:
         raise RuntimeError(
             'Implemented to support 4 modes, got a different number')
