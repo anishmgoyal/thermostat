@@ -30,7 +30,8 @@
     --font-size-medium: 14pt;
     --font-size-large: 16pt;
     --font-size-xlarge: 20pt;
-    --font-size-xxlarge: 80pt;
+    --font-size-xxlarge: 24pt;
+    --font-size-xxxlarge: 80pt;
 }
 
 @keyframes blink-animation {
@@ -146,7 +147,7 @@ button {
 }
 
 .temperature-panel .temperature-panel-body {
-    font-size: var(--font-size-xxlarge);
+    font-size: var(--font-size-xxxlarge);
     margin-top: var(--spacing-base);
 }
 
@@ -164,7 +165,7 @@ button {
     background-color: var(--secondary-background-dark);
     border: none;
     flex-basis: calc(50% - var(--button-spacing));
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-xxlarge);
     margin: 0;
 }
 
