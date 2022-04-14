@@ -30,7 +30,16 @@
     --font-size-medium: 14pt;
     --font-size-large: 16pt;
     --font-size-xlarge: 20pt;
-    --font-size-xxlarge: 36pt;
+    --font-size-xxlarge: 80pt;
+}
+
+@keyframes blink-animation {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.2;
+    }
 }
 
 * {
@@ -90,48 +99,9 @@ button {
     margin-bottom: -1 * var(--spacing-base);
 }
 
-.header-bar button#heat-activation-button {
-    color: var(--heating-text);
-}
-
-.header-bar button#cool-activation-button {
-    color: var(--cooling-text);
-}
-
-.header-bar button#fan-activation-button {
-    color: var(--fan-text);
-}
-
-.header-bar button#sched-activation-button {
-    color: var(--schedule-text);
-}
-
 .header-bar button#settings-button {
     color: var(--secondary-text);
 }
-
-.header-bar button#heat-activation-button.disabled-function,
-.header-bar button#cool-activation-button.disabled-function,
-.header-bar button#fan-activation-button.disabled-function,
-.header-bar button#sched-activation-button.disabled-function {
-    color: var(--secondary-text-dark);
-}
-
-.header-bar button.activated-function {
-    animation: blink-animation 1s infinite linear;
-    animation-direction: alternate;
-    background-color: var(--secondary-background-light);
-}
-
-@keyframes blink-animation {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0.2;
-    }
-}
-
 
 .header-bar-left {
     flex-grow: 1;
@@ -157,56 +127,74 @@ button {
 }
 
 .main-content .temperature-panel {
-    --grid-size: 3;
-    --cell-dim: 33.3333%;
-    --spacing-per-column: calc(var(--spacing-base)*2/3);
-
-    display: grid;
+    display: flex;
     flex: 1;
-    gap: var(--spacing-base);
-    grid-template-rows: repeat(var(--grid-size), calc(var(--cell-dim) - var(--spacing-per-column)));
-    grid-template-columns: repeat(var(--grid-size), calc(var(--cell-dim) - var(--spacing-per-column)));
     margin: var(--spacing-base);
-    max-height: 100%;
-    overflow: hidden;
 }
 
-.temperature-panel .temperature-panel-main,
-.temperature-panel .temperature-panel-secondary {
-    align-items: center;
+.temperature-panel {
+    align-self: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: var(--spacing-double);
+    text-align: center;
 }
 
-.temperature-panel .temperature-panel-main {
-    grid-column-start: span 2;
-    grid-row-start: span 3;
-}
-
-.temperature-panel .temperature-panel-main.has-no-sensors {
-    grid-column-start: span 3;
-}
-
-.temperature-panel .temperature-panel-main.has-four-plus-sensors {
-    grid-row-start: span 2;
-}
-
-.temperature-panel-main .temperature-panel-item-body {
-    font-size: var(--font-size-xxlarge);
-}
-
-.temperature-panel-secondary .temperature-panel-item-body {
-    font-size: var(--font-size-large);
-}
-
-.temperature-panel .temperature-panel-item-header {
+.temperature-panel .temperature-panel-header {
     font-size: var(--font-size-caption);
 }
 
-.temperature-panel .temperature-panel-item-body {
+.temperature-panel .temperature-panel-body {
+    font-size: var(--font-size-xxlarge);
     margin-top: var(--spacing-base);
+}
+
+.main-content .control-panel {
+    --button-spacing: var(--spacing-base);
+
+    display: flex;
+    flex-basis: 33.3333%;
+    flex-wrap: wrap;
+    gap: var(--button-spacing);
+    padding: var(--button-spacing) 0;
+}
+
+.control-panel .control-panel-button {
+    background-color: var(--secondary-background-dark);
+    border: none;
+    flex-basis: calc(50% - var(--button-spacing));
+    font-size: var(--font-size-large);
+    margin: 0;
+}
+
+.control-panel-button#heat-activation-button {
+    color: var(--heating-text);
+}
+
+.control-panel-button#cool-activation-button {
+    color: var(--cooling-text);
+}
+
+.control-panel-button#fan-activation-button {
+    color: var(--fan-text);
+}
+
+.control-panel-button#sched-activation-button {
+    color: var(--schedule-text);
+}
+
+.control-panel-button.disabled-function#heat-activation-button,
+.control-panel-button.disabled-function#cool-activation-button,
+.control-panel-button.disabled-function#fan-activation-button,
+.control-panel-button.disabled-function#sched-activation-button {
+    color: var(--secondary-text-dark);
+}
+
+.control-panel-button.activated-function {
+    animation: blink-animation 1s infinite linear;
+    animation-direction: alternate;
+    background-color: var(--secondary-background);
 }
 
 .footer-panel {

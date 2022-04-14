@@ -13,18 +13,6 @@
                 </div>
             </div>
             <div class="header-bar-right">
-                <button id="heat-activation-button" class="header-bar-button">
-                    <i class="fa-solid fa-fire fa-lg"></i>
-                </button>
-                <button id="cool-activation-button" class="header-bar-button">
-                    <i class="fa-solid fa-snowflake fa-lg"></i>
-                </button>
-                <button id="fan-activation-button" class="header-bar-button">
-                    <i class="fa-solid fa-fan fa-lg"></i>
-                </button>
-                <button id="sched-activation-button" class="header-bar-button">
-                    <i class="fa-solid fa-calendar-days fa-lg"></i>
-                </button>
                 <button id="settings-button" class="header-bar-button">
                     <i class="fa-solid fa-gear fa-lg"></i>
                 </button>
@@ -32,15 +20,26 @@
         </div>
         <div class="main-content">
             <div id="temp-panel" class="temperature-panel">
-                <div id="main-temp-block"
-                     class="temperature-panel-main has-no-sensors">
-                    <div class="temperature-panel-item-header text-secondary">
-                        Current Temperature
-                    </div>
-                    <div id="main-temp" class="temperature-panel-item-body">
-                        --
-                    </div>
+                <div class="temperature-panel-header text-secondary">
+                    Current Temperature
                 </div>
+                <div id="temp-display" class="temperature-panel-body">
+                    --
+                </div>
+            </div>
+            <div class="control-panel">
+                <button id="heat-activation-button" class="control-panel-button">
+                    <i class="fa-solid fa-fire fa-lg"></i>
+                </button>
+                <button id="cool-activation-button" class="control-panel-button">
+                    <i class="fa-solid fa-snowflake fa-lg"></i>
+                </button>
+                <button id="fan-activation-button" class="control-panel-button">
+                    <i class="fa-solid fa-fan fa-lg"></i>
+                </button>
+                <button id="sched-activation-button" class="control-panel-button">
+                    <i class="fa-solid fa-calendar-days fa-lg"></i>
+                </button>
             </div>
         </div>
 

@@ -1,89 +1,31 @@
 const DEG = '&deg;';
 
-function createExternalSensorDiv(displayName, tempC) {
-    const elem = document.createElement('div');
-    elem.classList.add('temperature-panel-secondary');
-
-    const header = document.createElement('div');
-    header.classList.add('temperature-panel-item-header', 'text-secondary');
-    header.innerText = displayName;
-
-    const tempDiv = document.createElement('div');
-    tempDiv.classList.add('temperature-panel-item-body');
-    updateTempDivWithFahrenheit(tempDiv, tempC);
-
-    elem.appendChild(header);
-    elem.appendChild(tempDiv);
-
-    return {elem, tempDiv};
-}
-
 function updateTempDivWithFahrenheit(tempElem, tempC) {
     const tempF = tempC * 9 / 5 + 32;
     tempElem.innerHTML = `${tempF.toFixed(0)}${DEG}F`;
 }
 
 window.addEventListener('load', () => {
-    const tempPanel = document.getElementById('temp-panel');
-    const mainTempGridBlock = document.getElementById('main-temp-block');
-    const mainTemp = document.getElementById('main-temp');
-    const externalTempSensors = new Map();
+    const tempDisplay = document.getElementById('temp-display');
 
     const currTimeElem = document.getElementById('curr-time');
     const currDateElem = document.getElementById('curr-date');
     const coolingControl = createTempControl('cooling-control');
     const heatingControl = createTempControl('heating-control');
 
-    const heatButton = createHeaderBarButton('heat-activation-button');
-    const coolButton = createHeaderBarButton('cool-activation-button');
-    const fanButton = createHeaderBarButton('fan-activation-button');
-    const schedButton = createHeaderBarButton('sched-activation-button');
-    const settingsButton = createHeaderBarButton('settings-button');
+    const heatButton = createGenericControl('heat-activation-button');
+    const coolButton = createGenericControl('cool-activation-button');
+    const fanButton = createGenericControl('fan-activation-button');
+    const schedButton = createGenericControl('sched-activation-button');
+    const settingsButton = createGenericControl('settings-button');
 
     const component = {
-        addExternalSensor(id, displayName, tempC) {
-            if (externalTempSensors.has(id)) {
-                return this.updateExternalSensor(id, tempC);
-            }
-
-            const existingSensors = Array.from(externalTempSensors.values());
-            existingSensors.sort((a, b) =>
-                a.displayName.localeCompare(b.displayName));
-            
-            const beforeTarget = existingSensors.find(sensor =>
-                displayName.localeCompare(sensor.displayName) < 0)?.elem;
-
-            const {elem, tempDiv} = createExternalSensorDiv(displayName, tempC);
-            externalTempSensors.set(id, {displayName, elem, tempDiv, tempC});
-
-            tempPanel.insertBefore(elem, beforeTarget);
-
-            if (externalTempSensors.size > 3) {
-                mainTempGridBlock.classList.add('has-four-plus-sensors');
-            }
-            mainTempGridBlock.classList.remove('has-no-sensors');
-        },
         registerInterval(callback, time) {
             callback.call(this);
             setInterval(callback.bind(this), time);
         },
-        removeExternalSensor(id) {
-            if (!externalTempSensors.has(id)) {
-                return;
-            }
-            externalTempSensors.get(id).elem.remove();
-            externalTempSensors.delete(id);
-
-            if (externalTempSensors.size < 4) {
-                mainTempGridBlock.classList.remove('has-four-plus-sensors');
-            }
-
-            if (externalTempSensors.size === 0) {
-                mainTempGridBlock.classList.add('has-no-sensors');
-            }
-        },
         updateCurrentTemp(tempC) {
-            updateTempDivWithFahrenheit(mainTemp, tempC);
+            updateTempDivWithFahrenheit(tempDisplay, tempC);
         },
         updateDateTime(dateTime) {
             const timeFormat = Intl.DateTimeFormat('en-US', {
@@ -98,14 +40,6 @@ window.addEventListener('load', () => {
                 day: 'numeric',
             });
             currDateElem.innerText = dateFormat.format(dateTime);
-        },
-        updateExternalSensor(id, tempC) {
-            if (!externalTempSensors.has(id)) {
-                return;
-            }
-
-            updateTempDivWithFahrenheit(
-                externalTempSensors.get(id).tempDiv, tempC);
         },
         coolingControl,
         heatingControl,
@@ -167,7 +101,7 @@ const createTempControl = function(baseId) {
     };
 }
 
-function createHeaderBarButton(id) {
+function createGenericControl(id) {
     const button = document.getElementById(id);
     button.classList.add('disabled-function');
     let isActive = false;
