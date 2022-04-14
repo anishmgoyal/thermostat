@@ -143,7 +143,6 @@ button {
 }
 
 .temperature-panel .temperature-panel-header {
-    display: none;
     font-size: var(--font-size-caption);
 }
 
@@ -157,10 +156,10 @@ button {
     --button-spacing: var(--spacing-base);
 
     display: flex;
-    flex-basis: 45%;
-    flex-wrap: wrap;
+    flex-basis: 23%;
+    flex-direction: column;
     gap: var(--button-spacing);
-    padding: var(--button-spacing) 0;
+    padding: var(--button-spacing) var(--button-spacing) 0;
 }
 
 .control-panel .control-panel-button {
