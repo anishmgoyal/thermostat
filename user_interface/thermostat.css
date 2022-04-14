@@ -1,3 +1,12 @@
+@keyframes blink-animation {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.2;
+    }
+}
+
 :root {
     --primary-background: #0a0b0c;
     --secondary-background: #1b1c1d;
@@ -34,15 +43,6 @@
     --font-size-xxxlarge: 80pt;
 }
 
-@keyframes blink-animation {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0.2;
-    }
-}
-
 * {
     box-sizing: border-box;
     user-select: none;
@@ -54,7 +54,7 @@ body {
     cursor: none;
     display: flex;
     flex-direction: column;
-    font-family: "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
+    font-family: "Roboto", sans-serif;
     height: 100vh;
     margin: 0;
     overflow: hidden;
@@ -114,7 +114,7 @@ button {
 
 .header-bar-time {
     font-size: var(--font-size-large);
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .header-bar-date {
@@ -137,6 +137,7 @@ button {
     align-self: center;
     display: flex;
     flex-direction: column;
+    font-weight: lighter;
     justify-content: center;
     padding: var(--spacing-double);
     text-align: center;
