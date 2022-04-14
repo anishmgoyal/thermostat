@@ -25,13 +25,13 @@
     --spacing-four: calc(var(--spacing-base)*4);
     --spacing-five: calc(var(--spacing-base)*5);
 
-    --font-size-base: 12pt;
-    --font-size-caption: 10pt;
-    --font-size-medium: 14pt;
-    --font-size-large: 16pt;
-    --font-size-xlarge: 20pt;
-    --font-size-xxlarge: 24pt;
-    --font-size-xxxlarge: 80pt;
+    --font-size-base: 16pt;
+    --font-size-caption: 14pt;
+    --font-size-medium: 18pt;
+    --font-size-large: 20pt;
+    --font-size-xlarge: 24pt;
+    --font-size-xxlarge: 26pt;
+    --font-size-xxxlarge: 60pt;
 }
 
 @keyframes blink-animation {
