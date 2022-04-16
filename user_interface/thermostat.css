@@ -34,7 +34,6 @@
     --spacing-four: calc(var(--spacing-base)*4);
     --spacing-five: calc(var(--spacing-base)*5);
 
-    --font-size-tiny: 10pt;
     --font-size-base: 16pt;
     --font-size-caption: 12pt;
     --font-size-medium: 18pt;
@@ -160,6 +159,7 @@ button {
     flex-basis: 23%;
     flex-direction: column;
     gap: var(--button-spacing);
+    margin: var(--spacing-half) 0;
     padding: var(--button-spacing) var(--button-spacing) 0;
 }
 
@@ -173,7 +173,7 @@ button {
 }
 
 .control-panel .control-panel-description {
-    font-size: var(--font-size-tiny);
+    font-size: var(--font-size-caption);
 }
 
 .control-panel .control-panel-button .control-panel-button-outline {
