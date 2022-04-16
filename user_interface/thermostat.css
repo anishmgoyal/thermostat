@@ -35,10 +35,10 @@
     --spacing-five: calc(var(--spacing-base)*5);
 
     --font-size-base: 16pt;
-    --font-size-caption: 14pt;
+    --font-size-caption: 12pt;
     --font-size-medium: 18pt;
     --font-size-large: 20pt;
-    --font-size-xlarge: 24pt;
+    --font-size-xlarge: 22pt;
     --font-size-xxlarge: 26pt;
     --font-size-xxxlarge: 80pt;
 }
@@ -95,7 +95,7 @@ button {
     background: none;
     border: none;
     border-radius: 999px;
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-medium);
     padding: var(--spacing-base);
     margin-bottom: -1 * var(--spacing-base);
 }
@@ -113,8 +113,7 @@ button {
 }
 
 .header-bar-time {
-    font-size: var(--font-size-large);
-    font-weight: 500;
+    font-size: var(--font-size-medium);
 }
 
 .header-bar-date {
@@ -164,11 +163,17 @@ button {
 }
 
 .control-panel .control-panel-button {
-    background-color: var(--secondary-background-dark);
+    background: transparent;
     border: none;
+    border-radius: 999px;
     flex-basis: calc(50% - var(--button-spacing));
-    font-size: var(--font-size-xxlarge);
+    font-size: var(--font-size-xlarge);
     margin: 0;
+}
+
+.control-panel .control-panel-button .control-panel-button-outline {
+    display: inline-block;
+    padding: calc(var(--spacing-base)*2.5);
 }
 
 .control-panel-button#heat-activation-button {
@@ -194,10 +199,11 @@ button {
     color: var(--secondary-text-dark);
 }
 
-.control-panel-button.activated-function {
+.control-panel-button.activated-function .control-panel-button-outline {
     animation: blink-animation 1s infinite linear;
     animation-direction: alternate;
     background-color: var(--secondary-background);
+    border-radius: 999px;
 }
 
 .footer-panel {
