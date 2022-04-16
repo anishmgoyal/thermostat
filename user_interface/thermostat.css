@@ -113,7 +113,7 @@ button {
 }
 
 .header-bar-time {
-    font-size: var(--font-size-medium);
+    font-size: var(--font-size-large);
 }
 
 .header-bar-date {
