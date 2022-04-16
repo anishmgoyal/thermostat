@@ -40,8 +40,9 @@
 
 .menu button .button-text {
     flex: 1;
-    font-weight: 700;
-    padding: var(--spacing-one-plus-half) 0;
+    font-weight: 600;
+    padding: var(--spacing-double) 0 var(--spacing-base);
+    vertical-align: bottom;
 }
 
 .menu button:disabled {
