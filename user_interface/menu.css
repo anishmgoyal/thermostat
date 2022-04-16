@@ -40,7 +40,7 @@
 
 .menu button .button-text {
     flex: 1;
-    font-weight: normal;
+    font-weight: 500;
     padding: var(--spacing-one-plus-half) 0;
 }
 
