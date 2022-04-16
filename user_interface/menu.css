@@ -41,7 +41,7 @@
 .menu button .button-text {
     flex: 1;
     font-weight: 700;
-    padding: var(--spacing-double) 0 var(--spacing-one-plus-half);
+    padding: var(--spacing-one-plus-half) 0;
 }
 
 .menu button:disabled {
