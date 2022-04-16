@@ -34,6 +34,7 @@
     --spacing-four: calc(var(--spacing-base)*4);
     --spacing-five: calc(var(--spacing-base)*5);
 
+    --font-size-tiny: 10pt;
     --font-size-base: 16pt;
     --font-size-caption: 12pt;
     --font-size-medium: 18pt;
@@ -171,9 +172,30 @@ button {
     margin: 0;
 }
 
+.control-panel .control-panel-description {
+    font-size: var(--font-size-tiny);
+}
+
 .control-panel .control-panel-button .control-panel-button-outline {
     display: inline-block;
-    padding: calc(var(--spacing-base)*2.5);
+    padding: var(--spacing-base);
+    margin-bottom: var(--spacing-half);
+}
+
+.control-panel .control-panel-button .control-panel-state-on {
+    display: inline;
+}
+
+.control-panel .control-panel-button.disabled-function .control-panel-state-on {
+    display: none;
+}
+
+.control-panel .control-panel-button .control-panel-state-off {
+    display: none;
+}
+
+.control-panel .control-panel-button.disabled-function .control-panel-state-off {
+    display: inline;
 }
 
 .control-panel-button#heat-activation-button {
