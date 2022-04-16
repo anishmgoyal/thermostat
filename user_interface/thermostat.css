@@ -88,7 +88,7 @@ button {
     background-color: var(--secondary-background-dark);
     display: flex;
     flex-direction: row;
-    padding: var(--spacing-four) var(--spacing-double) var(--spacing-base);
+    padding: var(--spacing-four) var(--spacing-triple) var(--spacing-base);
 }
 
 .header-bar button {

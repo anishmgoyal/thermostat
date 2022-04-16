@@ -41,7 +41,7 @@
 .menu button .button-text {
     flex: 1;
     font-weight: 600;
-    padding: var(--spacing-double) 0 var(--spacing-base);
+    padding: var(--spacing-one-plus-half) 0;
     vertical-align: bottom;
 }
 
