@@ -39,6 +39,11 @@ sudo apt-get update && sudo apt-get upgrade
 sudo apt-get install -y nginx mosquitto python3 iptables
 python3 -m pip install -r requirements.txt
 
+# Set system settings
+# Note: some of these are temporary; these will be supplemented
+# with configuration files that take effect on reboot
+sudo iw wlan0 set power_save off
+
 # Setup nginx
 sudo cp service_configuration/nginx.conf /etc/nginx/.
 mkdir -p /etc/nginx/servers/
@@ -48,9 +53,10 @@ sudo systemctl restart nginx
 # Copy startup scripts
 BOOT_DIR=$BASE_DIR/boot
 reinit_dir $BOOT_DIR
-cp service_configuration/kiosk.sh $BOOT_DIR/.
 cp service_configuration/autostart /etc/xdg/lxsession/LXDE-pi/.
 cp service_configuration/bash_profile.sh /home/pi/.bash_profile
+cp service_configuration/kiosk.sh $BOOT_DIR/.
+cp service_configuration/network_power_management /etc/network/interfaces.d/.
 
 # Copy the controller code
 CONTROL_DIR=$BASE_DIR/control
