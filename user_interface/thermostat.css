@@ -230,7 +230,6 @@ button {
 
 .footer-panel {
     align-items: center;
-    background-color: var(--secondary-background-dark);
     display: flex;
     justify-content: stretch;
     padding: var(--spacing-double) 0;
