@@ -81,10 +81,10 @@ const createTempControl = function(baseId) {
     const valueElem = document.getElementById(`${baseId}-value`);
     return {
         hideControl() {
-            control.style.visibility = 'hidden';
+            // control.style.display = 'none';
         },
         showControl() {
-            control.style.visibility = 'visible';
+            control.style.display = 'initial';
         },
         setVisible(visible) {
             if (!visible) {

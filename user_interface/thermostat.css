@@ -85,17 +85,16 @@ button {
 }
 
 .header-bar {
-    background-color: var(--secondary-background-dark);
     display: flex;
     flex-direction: row;
-    padding: var(--spacing-four) var(--spacing-triple) var(--spacing-base);
+    padding: var(--spacing-four) var(--spacing-five) var(--spacing-base);
 }
 
 .header-bar button {
     background: none;
     border: none;
     border-radius: 999px;
-    font-size: var(--font-size-medium);
+    font-size: var(--font-size-base);
     padding: var(--spacing-base);
     margin-bottom: -1 * var(--spacing-base);
 }
@@ -113,11 +112,11 @@ button {
 }
 
 .header-bar-time {
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-xlarge);
 }
 
 .header-bar-date {
-    font-size: var(--font-size-caption);
+    font-size: var(--font-size-base);
 }
 
 .main-content {
@@ -232,7 +231,7 @@ button {
     align-items: center;
     display: flex;
     justify-content: stretch;
-    padding: var(--spacing-double) 0;
+    padding: 0 var(--spacing-five) var(--spacing-double);
 }
 
 .footer-panel-item {
