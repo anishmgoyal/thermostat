@@ -81,7 +81,7 @@ const createTempControl = function(baseId) {
     const valueElem = document.getElementById(`${baseId}-value`);
     return {
         hideControl() {
-            // control.style.display = 'none';
+            control.style.display = 'none';
         },
         showControl() {
             control.style.display = 'initial';
