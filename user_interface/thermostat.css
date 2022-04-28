@@ -16,10 +16,10 @@
     --secondary-text: #c0cfe7;
     --secondary-text-dark: #8490a3;
 
-    --button-background: #31578f;
-    --button-background-accent: #1c304e;
-    --button-background-dark: #264370;
-    --button-color: var(--primary-text);
+    --button-background: #ddd;
+    --button-background-accent: #aaa;
+    --button-background-dark: #bbb;
+    --button-color: #000;
 
     --cooling-text: rgb(99, 163, 247);
     --heating-text: rgb(250, 93, 93);

@@ -6,7 +6,8 @@
     left: 0;
 
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
     display: flex;
     justify-content: center;
 }
@@ -41,7 +42,7 @@
 .menu button .button-text {
     flex: 1;
     font-weight: 500;
-    padding: calc(1.9 * var(--spacing-base)) 0 calc(1.1 * var(--spacing-base));
+    padding: calc(1.8 * var(--spacing-base)) 0 calc(1.2 * var(--spacing-base));
     vertical-align: bottom;
 }
 
